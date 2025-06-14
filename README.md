@@ -38,6 +38,6 @@ This project was created as part of my journey to learn web development — with
 It's a learning-focused build, and I'm continuously improving it as I explore new technologies and ideas.
 
 ## 📝 License
-MIT
+MIT – see the [LICENSE](./LICENSE) file for details.
 
 
