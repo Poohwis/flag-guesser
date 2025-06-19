@@ -1,7 +1,15 @@
 export interface FlagQuestion {
   id: number
-  country: string
+  country: string 
+  altNames? : string[]
   countryCode: string
+  capital? : string
+  language? : string[]
+  continent? : string
+  currency? : string[]
+  subregion?: string
+  areaKm? :  number
+  tld? :string
   options: string[]
 }
 

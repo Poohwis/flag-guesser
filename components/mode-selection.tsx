@@ -54,8 +54,8 @@ export function ModeSelection({
             <Button variant="ghost" size="sm" onClick={onToggleTheme} className="absolute top-4 right-4 p-2">
               {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <CardTitle className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Flag Guesser</CardTitle>
-            <p className="dark:text-white/50 text-gray-700">The Ultimate Flag Challenge — Start Guessing!</p>
+            <CardTitle className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Flag Quiz</CardTitle>
+            <p className="dark:text-white/50 text-gray-700">The Ultimate Flag Challenge!</p>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Country Filter Selection */}
@@ -88,7 +88,7 @@ export function ModeSelection({
                           className="rounded-sm"
                         />
                       </div>
-                      <span className="font-medium font-semibold">UN Recognized Countries</span>
+                      <span className="font-semibold">UN Recognized Countries</span>
                       <span className="text-sm text-gray-500 dark:text-gray-400 mt-1">{TOTAL_UN_COUNTRIES} flags</span>
                     </Label>
                     <Label
@@ -103,7 +103,7 @@ export function ModeSelection({
                       <div className="w-10 h-10 rounded-full bg-green-100/70 dark:bg-green-900/50 flex items-center justify-center mb-2 overflow-hidden">
                         <img src="/images/globe.png" alt="World Globe" className="w-8 h-8 object-contain" />
                       </div>
-                      <span className="font-medium font-semibold">All Flags</span>
+                      <span className="font-semibold">All Flags</span>
                       <span className="text-sm text-gray-500 dark:text-gray-400 mt-1">{TOTAL_ALL_COUNTRIES} flags</span>
                     </Label>
                   </RadioGroup>
@@ -119,7 +119,7 @@ export function ModeSelection({
                   <div className="grid grid-cols-2 gap-3">
                     <Button
                       onClick={() => onQuizLengthChange(10)}
-                      className={`h-16 flex flex-col items-center dark:hover:text-black justify-center space-y-1 
+                      className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
                       backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700
                        ${quizLength === 10 ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white" : "text-black dark:text-white"}` }
                     >
@@ -133,7 +133,7 @@ export function ModeSelection({
                           Math.floor((countryFilter === "un" ? TOTAL_UN_COUNTRIES : TOTAL_ALL_COUNTRIES) / 4),
                         )
                       }
-                      className={`h-16 flex flex-col items-center dark:hover:text-black justify-center space-y-1 
+                      className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
                       backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700 ${quizLength ===
                         Math.floor((countryFilter === "un" ? TOTAL_UN_COUNTRIES : TOTAL_ALL_COUNTRIES) / 4) ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white" : "text-black dark:text-white"}`}
                     >
@@ -149,7 +149,7 @@ export function ModeSelection({
                           Math.floor((countryFilter === "un" ? TOTAL_UN_COUNTRIES : TOTAL_ALL_COUNTRIES) / 2),
                         )
                       }
-                      className={`h-16 flex flex-col items-center dark:hover:text-black justify-center space-y-1 
+                      className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
                       backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700 ${quizLength ===
                         Math.floor((countryFilter === "un" ? TOTAL_UN_COUNTRIES : TOTAL_ALL_COUNTRIES) / 2) ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white" : "text-black dark:text-white"}`}
                     >
@@ -161,7 +161,7 @@ export function ModeSelection({
 
                     <Button
                       onClick={() => onQuizLengthChange("all")}
-                      className={`h-16 flex flex-col items-center dark:hover:text-black justify-center space-y-1 
+                      className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
                       backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700 ${quizLength === "all" ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white" : "text-black dark:text-white"}`}
                     >
                       <span className="font-semibold">Full</span>
@@ -270,12 +270,12 @@ export function ModeSelection({
               "
             >
               <Play className="w-5 h-5 mr-2" />
-              Start Guess
+              Start the quiz
             </Button>
 
             <div className="text-center text-sm text-gray-500 flex flex-col items-center justify-center dark:text-gray-400 space-y-2">
               {selectedGameMode ? (
-                <p className="dark:text-white/80 text-white/80 opacity-0 bg-orange-800 dark:bg-black px-2 rounded-full opacity-80">
+                <p className="dark:text-white/80 text-white/80  bg-orange-800 dark:bg-black px-2 rounded-full opacity-80">
                   {selectedGameMode === "multiple-choice"
                     ? `${multipleChoiceOptions} options per question`
                     : `Text input mode ${autocompleteEnabled ? "with" : "without"} autocomplete`}{" "}

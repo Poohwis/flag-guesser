@@ -1,31 +1,41 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { CheckCircle, XCircle, Loader2 } from "lucide-react"
-import type { FlagQuestion } from "../types"
+import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import type { FlagQuestion } from "../types";
+import { motion } from "motion/react";
+import { AnswerResult } from "./answer-result";
+import { InformationWithAnswerResultSection } from "./Information-with-answer-result";
 
 interface TextInputProps {
-  currentFlag: FlagQuestion
-  textAnswer: string
-  showResult: boolean
-  isCorrect: boolean
-  currentImageLoaded: boolean
-  nextImagePreloaded: boolean
-  currentQuestion: number
-  totalQuestions: number
-  autocompleteEnabled: boolean
-  suggestions: string[]
-  selectedSuggestionIndex: number
-  onTextInputChange: (value: string) => void
-  onTextSubmit: () => void
-  onSuggestionClick: (suggestion: string) => void
-  onNextQuestion: () => void
-  onSuggestionIndexChange: (index: number) => void
-  onClearSuggestions: () => void
+  currentFlag: FlagQuestion;
+  textAnswer: string;
+  showResult: boolean;
+  isCorrect: boolean;
+  currentImageLoaded: boolean;
+  nextImagePreloaded: boolean;
+  currentQuestion: number;
+  totalQuestions: number;
+  autocompleteEnabled: boolean;
+  suggestions: string[];
+  selectedSuggestionIndex: number;
+  showInformation: boolean;
+  isDarkMode: boolean;
+  description: string | null;
+  sourceUrl: string | null;
+  loadingDescription: boolean;
+  isSmallScreen: boolean;
+  toggleInformation: () => void;
+  onTextInputChange: (value: string) => void;
+  onTextSubmit: () => void;
+  onSuggestionClick: (suggestion: string) => void;
+  onNextQuestion: (isFinishRequest: boolean) => void;
+  onSuggestionIndexChange: (index: number) => void;
+  onClearSuggestions: () => void;
 }
 
 export function TextInput({
@@ -40,6 +50,13 @@ export function TextInput({
   autocompleteEnabled,
   suggestions,
   selectedSuggestionIndex,
+  showInformation,
+  isDarkMode,
+  description,
+  sourceUrl,
+  loadingDescription,
+  isSmallScreen,
+  toggleInformation,
   onTextInputChange,
   onTextSubmit,
   onSuggestionClick,
@@ -47,56 +64,67 @@ export function TextInput({
   onSuggestionIndexChange,
   onClearSuggestions,
 }: TextInputProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Auto-focus input when question loads
   useEffect(() => {
     if (currentImageLoaded && !showResult && inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }, [currentImageLoaded, currentQuestion])
+  }, [currentImageLoaded, currentQuestion]);
 
   // Spacebar support for next question and view results
   useEffect(() => {
-    if (!showResult) return
+    if (!showResult) return;
 
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.code === "Space") {
-        event.preventDefault()
-        onNextQuestion()
+        event.preventDefault();
+        onNextQuestion(false);
       }
-    }
+    };
 
-    window.addEventListener("keydown", handleKeyPress)
-    return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [showResult, onNextQuestion])
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [showResult, onNextQuestion]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      if (selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
+      if (
+        selectedSuggestionIndex >= 0 &&
+        suggestions[selectedSuggestionIndex]
+      ) {
         // Select the highlighted suggestion
-        onSuggestionClick(suggestions[selectedSuggestionIndex])
+        onSuggestionClick(suggestions[selectedSuggestionIndex]);
       } else {
-        onTextSubmit()
+        onTextSubmit();
       }
     } else if (e.key === "ArrowDown") {
-      e.preventDefault()
+      e.preventDefault();
       if (suggestions.length > 0) {
-        onSuggestionIndexChange(selectedSuggestionIndex < suggestions.length - 1 ? selectedSuggestionIndex + 1 : 0)
+        onSuggestionIndexChange(
+          selectedSuggestionIndex < suggestions.length - 1
+            ? selectedSuggestionIndex + 1
+            : 0
+        );
       }
     } else if (e.key === "ArrowUp") {
-      e.preventDefault()
+      e.preventDefault();
       if (suggestions.length > 0) {
-        onSuggestionIndexChange(selectedSuggestionIndex > 0 ? selectedSuggestionIndex - 1 : suggestions.length - 1)
+        onSuggestionIndexChange(
+          selectedSuggestionIndex > 0
+            ? selectedSuggestionIndex - 1
+            : suggestions.length - 1
+        );
       }
     } else if (e.key === "Escape") {
-      onClearSuggestions()
+      onClearSuggestions();
     }
-  }
+  };
 
   return (
-    <div className="flex flex-col h-[250px]">
-      <div className="space-y-4 mb-6">
+    <div className="flex flex-col ">
+      <div className="space-y-4 mb-1">
         <div className="relative">
           <Input
             ref={inputRef}
@@ -129,60 +157,65 @@ export function TextInput({
           )}
         </div>
 
-        {!showResult && (
-          <Button onClick={onTextSubmit} disabled={!textAnswer.trim() || !currentImageLoaded} className="w-full dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-[#09080e]/30 dark:text-white">
-            Submit Answer
-          </Button>
-        )}
+        <div className="h-[40px]">
+          {!showResult && (
+            <Button
+              onClick={onTextSubmit}
+              disabled={!textAnswer.trim() || !currentImageLoaded}
+              className="w-full dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-[#09080e]/30 dark:text-white"
+            >
+              Submit Answer
+            </Button>
+          )}
+        </div>
+      </div>
+      {/* Show infomation toggle */}
+      <div className="md:flex hidden flex-row items-center justify-end gap-x-1 mb-4">
+        <button
+          className="text-sm dark:text-white/80 text-gray-700"
+          onClick={toggleInformation}
+        >
+          show information
+        </button>
+        <input
+          onClick={toggleInformation}
+          type="checkbox"
+          className="accent-primary hover:cursor-pointer"
+          checked={showInformation}
+          readOnly
+        />
       </div>
 
       {/* Reserved space for result - ensure consistent height to prevent layout jumps */}
-      <div className="min-h-[180px] flex flex-col justify-center">
+      <motion.div
+        animate={showInformation ? { height: 400 } : { height: 100 }}
+        className="flex-col justify-center"
+      >
         {showResult ? (
-          <div className="space-y-4">
-            <div
-              className={`p-4 rounded-lg border-2 ${
-                isCorrect ? "bg-green-50 border-green-200 text-green-800" : "bg-red-50 border-red-200 text-red-800"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                {isCorrect ? (
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                ) : (
-                  <XCircle className="w-5 h-5 text-red-600" />
-                )}
-                <span className="font-semibold">{isCorrect ? "Correct!" : "Incorrect!"}</span>
-              </div>
-              {!isCorrect && (
-                <p className="mt-2">
-                  The correct answer is: <strong>{currentFlag.country}</strong>
-                </p>
-              )}
-            </div>
-            <div className="text-center">
-              <div className="flex flex-col items-center gap-2">
-                <Button
-                  onClick={onNextQuestion}
-                  className="w-full md:w-auto bg-black text-white dark:hover:bg-black dark:hover:opacity-80"
-                  disabled={!nextImagePreloaded && currentQuestion < totalQuestions - 1}
-                >
-                  {!nextImagePreloaded && currentQuestion < totalQuestions - 1 ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Loading next...
-                    </>
-                  ) : currentQuestion < totalQuestions - 1 ? (
-                    "Next Question"
-                  ) : (
-                    "View Results"
-                  )}
-                </Button>
-                <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-white/80">
-                  or press space
-                  
-                </div>
-              </div>
-            </div>
+          <div className="flex flex-col">
+            {showInformation && isSmallScreen ? (
+              <InformationWithAnswerResultSection
+                isCorrect={isCorrect}
+                currentFlag={currentFlag}
+                loadingDescription={loadingDescription}
+                description={description}
+                sourceUrl={sourceUrl}
+                isDarkMode={isDarkMode}
+                nextImagePreloaded={nextImagePreloaded}
+                currentQuestion={currentQuestion}
+                totalQuestions={totalQuestions}
+                onNextQuestion={onNextQuestion}
+              />
+            ) : (
+              <AnswerResult
+                isCorrect={isCorrect}
+                currentFlag={currentFlag}
+                nextImagePreloaded={nextImagePreloaded}
+                currentQuestion={currentQuestion}
+                totalQuestions={totalQuestions}
+                onNextQuestion={onNextQuestion}
+              />
+            )}
           </div>
         ) : (
           <div className="h-full flex flex-col justify-center">
@@ -190,12 +223,12 @@ export function TextInput({
               {!currentImageLoaded
                 ? "Loading flag image..."
                 : textAnswer.trim()
-                  ? "Press Enter or click Submit"
-                  : "Type your answer above"}
+                ? "Press Enter or click Submit"
+                : "Type your answer above"}
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
-  )
+  );
 }
