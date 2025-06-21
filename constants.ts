@@ -215,7 +215,6 @@ export type CountryInfo = {
 export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   ad: {
     name: "Andorra",
-    altNames : ["A" , "b"],
     capital: "Andorra la Vella",
     continent: "Europe",
     subregion: "Southern Europe",
@@ -250,6 +249,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ag: {
     name: "Antigua and Barbuda",
+    altNames: ["Antigua & Barbuda"],
     capital: "Saint John's",
     continent: "North America",
     subregion: "Caribbean",
@@ -350,7 +350,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ax: {
     name: "Åland Islands",
-    altNames : ["Aland", "Aland Islands"],
+    altNames: ["Aland Islands", "Aland"],
     capital: "Mariehamn",
     continent: "Europe",
     subregion: "Northern Europe",
@@ -371,6 +371,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ba: {
     name: "Bosnia and Herzegovina",
+    altNames: ["Bosnia & Herzegovina", "Bosnia-Herzegovina", "Bosnia"],
     capital: "Sarajevo",
     continent: "Europe",
     subregion: "Southern Europe",
@@ -465,6 +466,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   bl: {
     name: "Saint Barthélemy",
+    altNames : ["Saint Barthelemy", "St. Barthelemy", "St. Barthélemy"],
     capital: "Gustavia",
     continent: "North America",
     subregion: "Caribbean",
@@ -585,6 +587,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   cc: {
     name: "Cocos (Keeling) Islands",
+    altNames: ["Cocos Islands", "Keeling Islands"],
     capital: "West Island",
     continent: "Asia",
     subregion: "Australia and New Zealand",
@@ -595,6 +598,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   cd: {
     name: "DR Congo",
+    altNames: ["Democratic Republic of the Congo","DRC", "Congo-Kinshasa", "Zaire"],
     capital: "Kinshasa",
     continent: "Africa",
     subregion: "Middle Africa",
@@ -615,6 +619,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   cg: {
     name: "Republic of the Congo",
+    altNames: ["Congo",  "Congo-Brazzaville"],
     capital: "Brazzaville",
     continent: "Africa",
     subregion: "Middle Africa",
@@ -635,6 +640,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ci: {
     name: "Côte d'Ivoire (Ivory Coast)",
+    altNames: [ "Cote d'Ivoire", "Ivory Coast"],
     capital: "Yamoussoukro",
     continent: "Africa",
     subregion: "Western Africa",
@@ -759,6 +765,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   cz: {
     name: "Czechia",
+    altNames: ["Czechia", "Czech Republic", "Czech"],
     capital: "Prague",
     continent: "Europe",
     subregion: "Central Europe",
@@ -859,7 +866,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   eh: {
     name: "Western Sahara",
-    capital: "El Aaiún (disputed)",
+    capital: "Laayoune, El Aaiún (disputed)",
     continent: "Africa",
     subregion: "Northern Africa",
     languages: ["Arabic"],
@@ -919,6 +926,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   fk: {
     name: "Falkland Islands",
+    altNames: [ "Malvinas", "Falkland Islands (Malvinas)"],
     capital: "Stanley",
     continent: "South America",
     subregion: "South America",
@@ -929,6 +937,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   fm: {
     name: "Micronesia",
+    altNames: ["Micronesia (Federated States of)", "Micronesia", "Federated States of Micronesia"],
     capital: "Palikir",
     continent: "Oceania",
     subregion: "Micronesia",
@@ -969,6 +978,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   gb: {
     name: "United Kingdom",
+    altNames: ["United Kingdom", "UK", "U.K.", "Great Britain", "Britain", "England", "Scotland", "Wales", "Northern Ireland"],
     capital: "London",
     continent: "Europe",
     subregion: "Northern Europe",
@@ -989,6 +999,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ge: {
     name: "Georgia",
+    altNames: ["Georgia_country"],
     capital: "Tbilisi",
     continent: "Asia",
     subregion: "Western Asia",
@@ -1012,7 +1023,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
     capital: "Saint Peter Port",
     continent: "Europe",
     subregion: "Northern Europe",
-    languages: ["English", "French"],
+    languages: ["English", "Guernésiais","French" ],
     currency: { name: "Pound Sterling", code: "GBP", symbol: "£" },
     areaKm2: 78,
     tld: ".gg",
@@ -1149,6 +1160,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   hk: {
     name: "Hong Kong",
+    altNames: ["Hong Kong", "Hong Kong SAR", "Hong Kong, China"],
     capital: "Hong Kong",
     continent: "Asia",
     subregion: "Eastern Asia",
@@ -1269,10 +1281,11 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ir: {
     name: "Iran",
+    altNames: ["Iran (Islamic Republic of)", "Iran", "Islamic Republic of Iran"],
     capital: "Tehran",
     continent: "Asia",
     subregion: "Southern Asia",
-    languages: ["Persian"],
+    languages: ["Persian (Farsi)"],
     currency: { name: "Iranian Rial", code: "IRR", symbol: "﷼" },
     areaKm2: 1648195,
     tld: ".ir",
@@ -1399,6 +1412,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   kp: {
     name: "North Korea",
+    altNames: ["Korea (Democratic People's Republic of)", "North Korea", "Democratic People's Republic of Korea", "DPRK"],
     capital: "Pyongyang",
     continent: "Asia",
     subregion: "Eastern Asia",
@@ -1409,6 +1423,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   kr: {
     name: "South Korea",
+    altNames: ["Korea (Republic of)", "South Korea", "Republic of Korea", "ROK"],
     capital: "Seoul",
     continent: "Asia",
     subregion: "Eastern Asia",
@@ -1449,6 +1464,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   la: {
     name: "Laos",
+    altNames: ["Lao People's Democratic Republic", "Laos"],
     capital: "Vientiane",
     continent: "Asia",
     subregion: "South-Eastern Asia",
@@ -1549,6 +1565,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ly: {
     name: "Libya",
+    altNames: ["Libyan Arab Jamahiriya"],
     capital: "Tripoli",
     continent: "Africa",
     subregion: "Northern Africa",
@@ -1580,6 +1597,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   md: {
     name: "Moldova",
     capital: "Chișinău",
+    altNames: ["Republic of", "Moldova", "Republic of Moldova"],
     continent: "Europe",
     subregion: "Eastern Europe",
     languages: ["Romanian"],
@@ -1599,6 +1617,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   mf: {
     name: "Saint Martin",
+    altNames : ["Saint Martin_(island)"],
     capital: "Marigot",
     continent: "North America",
     subregion: "Caribbean",
@@ -1629,6 +1648,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   mk: {
     name: "North Macedonia",
+    altNames: [ "Republic of North Macedonia"],
     capital: "Skopje",
     continent: "Europe",
     subregion: "Southern Europe",
@@ -1649,6 +1669,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   mm: {
     name: "Myanmar",
+    altNames: ["Myanmar", "Burma"],
     capital: "Naypyidaw",
     continent: "Asia",
     subregion: "South-Eastern Asia",
@@ -1670,6 +1691,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   mo: {
     name: "Macau",
     capital: "Macau",
+    altNames: ["Macao", "Macau", "Macao SAR", "Macau SAR", "Macao, China", "Macau, China"],
     continent: "Asia",
     subregion: "Eastern Asia",
     languages: ["Cantonese", "Portuguese"],
@@ -1989,6 +2011,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   pm: {
     name: "Saint Pierre and Miquelon",
+    altNames: ["St. Pierre and Miquelon"],
     capital: "Saint-Pierre",
     continent: "North America",
     subregion: "Northern America",
@@ -2020,6 +2043,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   ps: {
     name: "Palestine",
     capital: "Jerusalem (claimed), Ramallah (de facto)",
+    altNames: ["Palestine, State of", "Palestine", "State of Palestine", "Occupied Palestinian Territory", "West Bank and Gaza"],
     continent: "Asia",
     subregion: "Western Asia",
     languages: ["Arabic"],
@@ -2069,6 +2093,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   re: {
     name: "Réunion",
+    altNames: ["Reunion"],
     capital: "Saint-Denis",
     continent: "Africa",
     subregion: "Eastern Africa",
@@ -2099,12 +2124,11 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ru: {
     name: "Russia",
+    altNames: ["Russian Federation"],
     capital: "Moscow",
-    continent: "Europe",
-    subregion: "Eastern Europe",
     languages: ["Russian"],
     currency: { name: "Russian Ruble", code: "RUB", symbol: "₽" },
-    areaKm2: 17098246,
+    areaKm2: 17098242,
     tld: ".ru",
   },
   rw: {
@@ -2179,6 +2203,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   sh: {
     name: "Saint Helena, Ascension and Tristan da Cunha",
+    altNames: ["Saint Helena, Ascension & Tristan da Cunha", "Saint Helena", "Ascension Island", "Tristan da Cunha", "St Helena", "St. Helena"],
     capital: "Jamestown (Saint Helena)",
     continent: "Africa",
     subregion: "Western Africa",
@@ -2279,6 +2304,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   st: {
     name: "São Tomé and Príncipe",
+    altNames: ["Sao Tome and Principe", "Sao Tome", "Sao Tome & Principe"],
     capital: "São Tomé",
     continent: "Africa",
     subregion: "Middle Africa",
@@ -2317,6 +2343,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   sy: {
     name: "Syria",
+    altNames: ["Syrian Arab Republic"],
     capital: "Damascus",
     continent: "Asia",
     subregion: "Western Asia",
@@ -2327,6 +2354,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   sz: {
     name: "Eswatini (Swaziland)",
+    altNames: ["Eswatini", "Kingdom of Eswatini", "Swaziland"],
     capital: "Mbabane (administrative), Lobamba (royal and legislative)",
     continent: "Africa",
     subregion: "Southern Africa",
@@ -2407,6 +2435,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   tl: {
     name: "Timor-Leste",
+    altNames: [ "East Timor"],
     capital: "Dili",
     continent: "Asia",
     subregion: "South-Eastern Asia",
@@ -2477,6 +2506,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   tw: {
     name: "Taiwan",
+    altNames: [ "Republic of China", "Chinese Taipei"],
     capital: "Taipei",
     continent: "Asia",
     subregion: "Eastern Asia",
@@ -2487,6 +2517,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   tz: {
     name: "Tanzania",
+    altNames: ["Tanzania, United Republic of"],
     capital: "Dodoma",
     continent: "Africa",
     subregion: "Eastern Africa",
@@ -2516,13 +2547,14 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
     tld: ".ug",
   },
   us: {
-    name: "United States",
+    name: "United States of America",
+    altNames: [ "United States", "USA", "U.S.A.", "US", "U.S.", "America"],
     capital: "Washington, D.C.",
     continent: "North America",
     subregion: "Northern America",
     languages: ["English"],
     currency: { name: "United States Dollar", code: "USD", symbol: "$" },
-    areaKm2: 9833520,
+    areaKm2: 9833517,
     tld: ".us",
   },
   uy: {
@@ -2546,7 +2578,8 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
     tld: ".uz",
   },
   va: {
-    name: "Vatican City (Holy See)",
+    name: "Vatican City",
+    altNames: ["Holy See (Vatican City State)", "Holy See", "Vatican City State", "Vatican City", "Vatican"],
     capital: "Vatican City",
     continent: "Europe",
     subregion: "Southern Europe",
@@ -2567,6 +2600,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ve: {
     name: "Venezuela",
+    altNames: ["Venezuela (Bolivarian Republic of)", "Bolivarian Republic of Venezuela"],
     capital: "Caracas",
     continent: "South America",
     subregion: "South America",
@@ -2597,6 +2631,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   vn: {
     name: "Vietnam",
+    altNames: ["Viet Nam"],
     capital: "Hanoi",
     continent: "Asia",
     subregion: "South-Eastern Asia",
@@ -2716,7 +2751,7 @@ export const isUNCountry = (countryCode: string): boolean => {
 };
 
 // Default quiz length
-export const DEFAULT_QUIZ_LENGTH = 20;
+export const DEFAULT_QUIZ_LENGTH = 10;
 export const DEFAULT_COUNTRY_FILTER: CountryFilter = "un";
 
 // Add constants for the total counts

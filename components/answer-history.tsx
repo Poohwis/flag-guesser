@@ -28,17 +28,15 @@ export function AnswerHistory({ correctAnswers, incorrectAnswers }: AnswerHistor
     <div className="md:grid hidden grid-cols-2 gap-4 mt-4">
       <div className="border rounded-lg p-3 bg-green-50 dark:bg-green-900/20">
         <h3 className="text-sm font-medium text-green-700 dark:text-green-400 mb-2 flex items-center justify-between">
-          <span>Correct ({correctAnswers.length})</span>
+          <span>Correct: {correctAnswers.length}</span>
         </h3>
         <div className="relative">
-
-
           <div
             id="correct-answers-container"
             className="grid grid-cols-4 gap-1.5 h-24 overflow-y-auto pr-1 custom-scrollbar overflow-x-hidden"
             style={{
               gridAutoRows: "min-content",
-              gridTemplateColumns: "repeat(auto-fill, minmax(32px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(32px, 1fr)) ",
             }}
           >
             {correctAnswers.length === 0 ? (
@@ -48,7 +46,7 @@ export function AnswerHistory({ correctAnswers, incorrectAnswers }: AnswerHistor
                 <motion.div
                  initial={{scale: 0}}
                  whileInView={{scale: 1}}
-                 key={`correct-${index}`} className="relative group flex items-center justify-center">
+                 key={`correct-${index}`} className="relative group flex items-center justify-center ">
                   <FlagIcon countryCode={answer.countryCode} country={answer.country} size="sm" />
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20">
                     {answer.country}
@@ -61,7 +59,7 @@ export function AnswerHistory({ correctAnswers, incorrectAnswers }: AnswerHistor
       </div>
       <div className="border rounded-lg p-3 bg-red-50 dark:bg-red-900/20">
         <h3 className="text-sm font-medium text-red-700 dark:text-red-400 mb-2 flex items-center justify-between">
-          <span>Incorrect ({incorrectAnswers.length})</span>
+          <span>Incorrect: {incorrectAnswers.length}</span>
         </h3>
         <div className="relative">
 

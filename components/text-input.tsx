@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
@@ -26,9 +26,12 @@ interface TextInputProps {
   showInformation: boolean;
   isDarkMode: boolean;
   description: string | null;
+  extract : string | null
   sourceUrl: string | null;
   loadingDescription: boolean;
   isSmallScreen: boolean;
+  nextDisabled : boolean;
+  setNextDisabled : (state : boolean)=> void
   toggleInformation: () => void;
   onTextInputChange: (value: string) => void;
   onTextSubmit: () => void;
@@ -53,9 +56,11 @@ export function TextInput({
   showInformation,
   isDarkMode,
   description,
+  extract,
   sourceUrl,
   loadingDescription,
   isSmallScreen,
+  setNextDisabled,nextDisabled,
   toggleInformation,
   onTextInputChange,
   onTextSubmit,
@@ -78,15 +83,21 @@ export function TextInput({
     if (!showResult) return;
 
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === "Space") {
+      if (event.code === "Space" && !nextDisabled) {
         event.preventDefault();
+        setNextDisabled(true);
         onNextQuestion(false);
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [showResult, onNextQuestion]);
+  }, [showResult, onNextQuestion, nextDisabled]);
+
+  // Re-enable next button when question changes or result is hidden
+  useEffect(() => {
+    setNextDisabled(false);
+  }, [currentQuestion, showResult]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -198,13 +209,18 @@ export function TextInput({
                 isCorrect={isCorrect}
                 currentFlag={currentFlag}
                 loadingDescription={loadingDescription}
+                extract={extract}
                 description={description}
                 sourceUrl={sourceUrl}
                 isDarkMode={isDarkMode}
                 nextImagePreloaded={nextImagePreloaded}
                 currentQuestion={currentQuestion}
                 totalQuestions={totalQuestions}
-                onNextQuestion={onNextQuestion}
+                onNextQuestion={() => {
+                  setNextDisabled(true);
+                  onNextQuestion(false);
+                }}
+                nextDisabled={nextDisabled}
               />
             ) : (
               <AnswerResult
@@ -213,7 +229,11 @@ export function TextInput({
                 nextImagePreloaded={nextImagePreloaded}
                 currentQuestion={currentQuestion}
                 totalQuestions={totalQuestions}
-                onNextQuestion={onNextQuestion}
+                onNextQuestion={() => {
+                  setNextDisabled(true);
+                  onNextQuestion(false);
+                }}
+                nextDisabled={nextDisabled}
               />
             )}
           </div>

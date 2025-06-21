@@ -8,24 +8,28 @@ interface InformationWithAnswerResultProps {
   currentFlag: FlagQuestion;
   loadingDescription: boolean;
   description: string | null;
+  extract : string | null
   sourceUrl: string | null;
   isDarkMode: boolean;
   nextImagePreloaded: boolean;
   currentQuestion: number;
   totalQuestions: number;
   onNextQuestion: (isFinishRequest: boolean) => void;
+  nextDisabled: boolean;
 }
 export const InformationWithAnswerResultSection = ({
   isCorrect,
   currentFlag,
   loadingDescription,
   description,
+  extract,
   sourceUrl,
   isDarkMode,
   nextImagePreloaded,
   currentQuestion,
   totalQuestions,
   onNextQuestion,
+  nextDisabled = false,
 }: InformationWithAnswerResultProps) => {
   return (
     <div className="md:flex flex-col hidden">
@@ -54,6 +58,7 @@ export const InformationWithAnswerResultSection = ({
         <CountryInformation
           loadingDescription={loadingDescription}
           description={description}
+          extract={extract}
           sourceUrl={sourceUrl}
           currentFlag={currentFlag}
           isDarkMode={isDarkMode}
@@ -63,7 +68,7 @@ export const InformationWithAnswerResultSection = ({
         <button
           onClick={() => onNextQuestion(false)}
           className="px-2 rounded-sm text-sm mt-2 w-full md:w-auto bg-black text-white hover:bg-black/80 md:h-8 h-10"
-          disabled={!nextImagePreloaded && currentQuestion < totalQuestions - 1}
+          disabled={nextDisabled || (!nextImagePreloaded && currentQuestion < totalQuestions - 1)}
         >
           {!nextImagePreloaded && currentQuestion < totalQuestions - 1 ? (
             <>

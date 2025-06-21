@@ -21,10 +21,13 @@ interface MultipleChoiceProps {
   totalQuestions: number;
   isDarkMode: boolean;
   description: string | null;
+  extract : string | null
   sourceUrl: string | null;
   loadingDescription: boolean;
   showInformation: boolean;
   isSmallScreen : boolean
+  nextDisabled : boolean;
+  setNextDisabled : (state : boolean)=> void
   toggleInformation: () => void;
   onAnswerSelect: (answer: string) => void;
   onNextQuestion: (isFinishRequest: boolean) => void;
@@ -42,9 +45,12 @@ export function MultipleChoice({
   isDarkMode,
   description,
   sourceUrl,
+  extract,
   loadingDescription,
   showInformation,
   isSmallScreen,
+  nextDisabled,
+  setNextDisabled,
   toggleInformation,
   onAnswerSelect,
   onNextQuestion,
@@ -68,19 +74,26 @@ export function MultipleChoice({
   }, [showResult, currentFlag, currentImageLoaded, onAnswerSelect]);
 
   // Spacebar support for next question and view results
+
   useEffect(() => {
     if (!showResult) return;
 
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === "Space") {
+      if (event.code === "Space" && !nextDisabled) {
         event.preventDefault();
+        setNextDisabled(true);
         onNextQuestion(false);
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [showResult, onNextQuestion]);
+  }, [showResult, onNextQuestion, nextDisabled]);
+
+  // Re-enable next button when question changes or result is hidden
+  useEffect(() => {
+    setNextDisabled(false);
+  }, [currentQuestion, showResult]);
 
   return (
     <div className="flex-1 flex flex-col">
@@ -163,12 +176,17 @@ export function MultipleChoice({
                 currentFlag={currentFlag}
                 loadingDescription={loadingDescription}
                 description={description}
+                extract={extract}
                 sourceUrl={sourceUrl}
                 isDarkMode={isDarkMode}
                 nextImagePreloaded={nextImagePreloaded}
                 currentQuestion={currentQuestion}
                 totalQuestions={totalQuestions}
-                onNextQuestion={onNextQuestion}
+                onNextQuestion={() => {
+                  setNextDisabled(true);
+                  onNextQuestion(false);
+                }}
+                nextDisabled={nextDisabled}
               />
             ) : (
               <AnswerResult
@@ -177,7 +195,11 @@ export function MultipleChoice({
                 nextImagePreloaded={nextImagePreloaded}
                 currentQuestion={currentQuestion}
                 totalQuestions={totalQuestions}
-                onNextQuestion={onNextQuestion}
+                onNextQuestion={() => {
+                  setNextDisabled(true);
+                  onNextQuestion(false);
+                }}
+                nextDisabled={nextDisabled}
               />
             )}
           </div>

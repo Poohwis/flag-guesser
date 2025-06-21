@@ -8,6 +8,7 @@ import { motion } from "motion/react";
 interface CountryInformationProps {
   currentFlag: FlagQuestion;
   description: string | null;
+  extract: string | null;
   sourceUrl: string | null;
   loadingDescription: boolean;
   isDarkMode: boolean;
@@ -15,6 +16,7 @@ interface CountryInformationProps {
 export function CountryInformation({
   description,
   sourceUrl,
+  extract,
   loadingDescription,
   currentFlag,
   isDarkMode,
@@ -32,6 +34,7 @@ export function CountryInformation({
       <div className="flex flex-col gap-y-2 w-full">
         <CountryDescription
           loadingDescription={loadingDescription}
+          extract={extract}
           description={description}
           sourceUrl={sourceUrl}
         />
@@ -47,16 +50,14 @@ interface CountryDataProps {
 function CountryData({ currentFlag }: CountryDataProps) {
   return (
     <motion.div
-      initial={{ scale: 0.9, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
+      // initial={{ scale: 0.9, opacity: 0 }}
+      // whileInView={{ scale: 1, opacity: 1 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       transition={{ delay: 0.2 }}
       className="flex flex-col ml-2"
     >
       {[
-        {
-          label: "Continent",
-          value: `${currentFlag.continent} — ${currentFlag.subregion}`,
-        },
         { label: "Capital City", value: currentFlag.capital },
         {
           label: "Official Language",

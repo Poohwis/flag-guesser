@@ -1,14 +1,14 @@
 
-# 🌍 Flag Quiz
+# 🌍 Flag Quizzer
 
 A fun and educational site where users can answer the flags, test their geography knowledge, and learn more about countries around the world.
 
 ## ✅ Features Progress
 
 ### 🧠 Game Modes
-- [x] **Flag Quiz - Multiple Choice**  
+- [x] **Flag Quizzer - Multiple Choice**  
   Answer the flag from 4, 6, 8 options.
-- [x] **Flag Quiz - Type Answer**  
+- [x] **Flag Quizzer - Type Answer**  
   Type the correct country name for the given flag.
 - [ ] **Pinpoint Location**  
   Click on the map to answer the country's location.

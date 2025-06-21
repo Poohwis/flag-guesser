@@ -9,6 +9,7 @@ interface AnswerResultProps {
   currentQuestion: number;
   totalQuestions: number;
   onNextQuestion: (isFinishRequest: boolean) => void;
+  nextDisabled: boolean;
 }
 export const AnswerResult = ({
   isCorrect,
@@ -17,6 +18,7 @@ export const AnswerResult = ({
   currentQuestion,
   totalQuestions,
   onNextQuestion,
+  nextDisabled = false,
 }: AnswerResultProps) => {
   return (
     <div className="flex flex-col items-center self-center w-full md:mt-0 mt-4">
@@ -45,7 +47,7 @@ export const AnswerResult = ({
         <button
           onClick={() => onNextQuestion(false)}
           className="px-2 rounded-sm text-sm mt-2 w-full text-nowrap bg-black text-white hover:bg-black/80 md:h-10 h-10"
-          disabled={!nextImagePreloaded && currentQuestion < totalQuestions - 1}
+          disabled={nextDisabled || (!nextImagePreloaded && currentQuestion < totalQuestions - 1)}
         >
           {!nextImagePreloaded && currentQuestion < totalQuestions - 1 ? (
             <>
@@ -53,7 +55,8 @@ export const AnswerResult = ({
               Loading next...
             </>
           ) : currentQuestion < totalQuestions - 1 ? (
-            "Next Question") : (
+            "Next Question"
+          ) : (
             "View Results"
           )}
         </button>

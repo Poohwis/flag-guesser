@@ -58,8 +58,7 @@ export const generateQuestions = (
   }
 
   // Shuffle the entries
-  const shuffled = [...entries].sort();
-  // const shuffled = [...entries].sort(() => 0.5 - Math.random());
+  const shuffled = [...entries].sort(() => 0.5 - Math.random());
 
   // Determine how many entries to use
   let selectedEntries: [string, CountryInfo][];
@@ -74,7 +73,7 @@ export const generateQuestions = (
     const name = countryInfo.name;
 
     // Generate random wrong options (optionsCount - 1 because one option is the correct answer)
-    const wrongOptions = getRandomWrongOptions(name[0], optionsCount - 1);
+    const wrongOptions = getRandomWrongOptions(name, optionsCount - 1);
 
     // Combine correct answer with wrong options and shuffle
     const options = [name, ...wrongOptions];
@@ -83,7 +82,7 @@ export const generateQuestions = (
     return {
       id: index + 1,
       country: name,
-      altNames : countryInfo.altNames,
+      altNames: countryInfo.altNames,
       language: countryInfo.languages,
       continent: countryInfo.continent,
       subregion: countryInfo.subregion,
@@ -154,7 +153,7 @@ export const getQuizLengthDisplay = (
   }
 };
 
-export const fetchCountryDescription = async (
+export const fetchKgCountryDescription = async (
   countryName: string,
   apiKey: string
 ): Promise<{ description: string | null; sourceUrl: string | null }> => {
@@ -195,9 +194,41 @@ export const fetchCountryDescription = async (
         }
       }
     }
-    return { description: "No information found for this country.", sourceUrl: null };
+    return {
+      description: "No information found for this country.",
+      sourceUrl: null,
+    };
   } catch (error: any) {
     console.error("Error fetching country description:", error);
     return { description: null, sourceUrl: null };
+  }
+};
+
+export const fetchWikiMediaCountryDescription = async (
+  countryName: string
+): Promise<{
+  description: string | null;
+  sourceUrl: string | null;
+  extract: string | null;
+}> => {
+  try {
+    const response = await fetch(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(countryName)}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return {
+      description: data.description ?? null,
+      extract: data.extract ?? null,
+      sourceUrl: data?.content_urls?.desktop?.page ?? null,
+    };
+  } catch (error) {
+    console.error("Error fetching Wikipedia summary:", error);
+    return { description: null, extract: null, sourceUrl: null };
   }
 };

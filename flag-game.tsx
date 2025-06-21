@@ -18,7 +18,8 @@ import {
   preloadNextImage,
   getAllCountries,
   formatTime,
-  fetchCountryDescription,
+  fetchKgCountryDescription,
+  fetchWikiMediaCountryDescription,
 } from "./utils";
 import {
   DEFAULT_QUIZ_LENGTH,
@@ -30,7 +31,8 @@ import type { GameMode, FlagQuestion, CountryFilter } from "./types";
 export default function FlagGame() {
   // Game state
   const [gameMode, setGameMode] = useState<GameMode>(null);
-  const [selectedGameMode, setSelectedGameMode] = useState<GameMode>(null);
+  const [selectedGameMode, setSelectedGameMode] =
+    useState<GameMode>("multiple-choice");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [textAnswer, setTextAnswer] = useState("");
@@ -69,13 +71,16 @@ export default function FlagGame() {
   // Description state
   const [description, setDescription] = useState<string | null>(null);
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
+  const [extract, setExtract] = useState<string | null>(null);
+
   const [loadingDescription, setLoadingDescription] = useState<boolean>(true);
 
-  const [showInfomation, setShowInformation] = useState(false);
+  const [showInfomation, setShowInformation] = useState(true);
   const allCountries = getAllCountries();
   const currentFlag = flagQuestions[currentQuestion];
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [nextDisable, setNextDisabled] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -151,11 +156,17 @@ export default function FlagGame() {
       setSourceUrl(null); // Clear previous source URL
 
       if (showInfomation) {
-        fetchCountryDescription(currentFlag.country, apiKey).then((result) => {
+        fetchWikiMediaCountryDescription(currentFlag.country).then((result) => {
           setDescription(result.description);
           setSourceUrl(result.sourceUrl);
-          setLoadingDescription(false);
+          setExtract(result.extract);
+          setLoadingDescription(false)
         });
+        // fetchKgCountryDescription(currentFlag.country, apiKey).then((result) => {
+        //   setDescription(result.description);
+        //   setSourceUrl(result.sourceUrl);
+        //   setLoadingDescription(false);
+        // });
       }
     }
   }, [currentFlag, apiKey, showInfomation]);
@@ -247,9 +258,7 @@ export default function FlagGame() {
     const answer = textAnswer.toLowerCase().trim();
     const isMainName = answer === currentFlag.country.toLowerCase();
     const isAltName = Array.isArray(currentFlag.altNames)
-      ? currentFlag.altNames.some(
-          (alt) => alt.toLowerCase().trim() === answer
-        )
+      ? currentFlag.altNames.some((alt) => alt.toLowerCase().trim() === answer)
       : false;
 
     if (isMainName || isAltName) {
@@ -388,7 +397,9 @@ export default function FlagGame() {
         <Card className="w-full max-w-3xl min-h-[600px] flex flex-col backdrop-blur-xl bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl">
           <CardHeader className="md:px-6 md:py-6 px-6 py-2">
             <div className="flex justify-between items-center">
-              <CardTitle className="text-xl font-bold">Flag Quiz</CardTitle>
+              <CardTitle className="text-3xl font-bold moirai ">
+                Flag Quizzer
+              </CardTitle>
               <div className="flex items-center gap-2">
                 <Button
                   variant="ghost"
@@ -469,6 +480,7 @@ export default function FlagGame() {
                 currentFlag={currentFlag}
                 selectedAnswer={selectedAnswer}
                 description={description}
+                extract={extract}
                 sourceUrl={sourceUrl}
                 loadingDescription={loadingDescription}
                 showInformation={showInfomation}
@@ -481,6 +493,8 @@ export default function FlagGame() {
                 totalQuestions={flagQuestions.length}
                 onAnswerSelect={handleAnswerSelect}
                 onNextQuestion={handleNextQuestion}
+                nextDisabled={nextDisable}
+                setNextDisabled={setNextDisabled}
               />
             )}
 
@@ -493,6 +507,7 @@ export default function FlagGame() {
                 showResult={showResult}
                 isCorrect={isCorrect}
                 description={description}
+                extract={extract}
                 sourceUrl={sourceUrl}
                 loadingDescription={loadingDescription}
                 showInformation={showInfomation}
@@ -509,6 +524,8 @@ export default function FlagGame() {
                 onSuggestionClick={handleSuggestionClick}
                 onNextQuestion={handleNextQuestion}
                 onSuggestionIndexChange={setSelectedSuggestionIndex}
+                nextDisabled={nextDisable}
+                setNextDisabled={setNextDisabled}
                 onClearSuggestions={() => {
                   setSuggestions([]);
                   setSelectedSuggestionIndex(-1);
