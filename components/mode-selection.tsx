@@ -76,12 +76,12 @@ export function ModeSelection({
             >
               <div className="relative">
                 <div className="w-12 h-6 rounded-full bg-blue-700 absolute -translate-x-2 z-10" />
-                <div className="w-4 h-4 rounded-full bg-lime-200 absolute translate-x-2 translate-y-1 z-30 " />
+                <div className="w-4 h-4 rounded-full bg-blue-500 absolute translate-x-2 translate-y-1 z-30 " />
                 <div className="w-8 h-6 rounded-full bg-green-600 absolute z-20" />
               </div>
               <h1 className="z-30">FlagQuizzer</h1>
             </CardTitle>
-            <p className="dark:text-white/50 text-gray-700">
+            <p className="dark:text-white/50 text-gray-700 ">
               The Ultimate Flag Challenge!
             </p>
           </CardHeader>

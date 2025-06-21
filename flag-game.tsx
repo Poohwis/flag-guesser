@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, Home, Clock } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import { ModeSelection } from "./components/mode-selection";
 import { GameComplete } from "./components/game-complete";
@@ -18,7 +19,6 @@ import {
   preloadNextImage,
   getAllCountries,
   formatTime,
-  fetchKgCountryDescription,
   fetchWikiMediaCountryDescription,
 } from "./utils";
 import {
@@ -42,7 +42,6 @@ export default function FlagGame() {
   const [autocompleteEnabled, setAutocompleteEnabled] = useState(true);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [flagQuestions, setFlagQuestions] = useState<FlagQuestion[]>([]);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [quizLength, setQuizLength] = useState<QuizLength>(DEFAULT_QUIZ_LENGTH);
   const [countryFilter, setCountryFilter] = useState<CountryFilter>(
@@ -162,11 +161,6 @@ export default function FlagGame() {
           setExtract(result.extract);
           setLoadingDescription(false)
         });
-        // fetchKgCountryDescription(currentFlag.country, apiKey).then((result) => {
-        //   setDescription(result.description);
-        //   setSourceUrl(result.sourceUrl);
-        //   setLoadingDescription(false);
-        // });
       }
     }
   }, [currentFlag, apiKey, showInfomation]);
@@ -338,8 +332,9 @@ export default function FlagGame() {
     handleBackToMenu();
   };
 
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const handleToggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   const handleCurrentImageLoad = () => {
@@ -350,7 +345,7 @@ export default function FlagGame() {
   if (!gameMode) {
     return (
       <ModeSelection
-        isDarkMode={isDarkMode}
+        isDarkMode={resolvedTheme === "dark"}
         autocompleteEnabled={autocompleteEnabled}
         quizLength={quizLength}
         countryFilter={countryFilter}
@@ -371,7 +366,7 @@ export default function FlagGame() {
   if (gameComplete) {
     return (
       <GameComplete
-        isDarkMode={isDarkMode}
+        isDarkMode={resolvedTheme === "dark"}
         gameMode={gameMode}
         score={score}
         totalQuestions={flagQuestions.length}
@@ -386,10 +381,10 @@ export default function FlagGame() {
 
   // Main Game Screen
   return (
-    <div className={isDarkMode ? "dark" : ""}>
+    <div>
       <div
         className={`min-h-screen flex items-center justify-center p-4 transition-colors ${
-          isDarkMode
+          resolvedTheme === "dark"
             ? "bg-gradient-to-t from-violet-400 to-black"
             : "bg-gradient-to-t from-orange-100 to-orange-200"
         }`}
@@ -417,7 +412,7 @@ export default function FlagGame() {
                   className="p-2"
                   title="Toggle Theme"
                 >
-                  {isDarkMode ? (
+                  {resolvedTheme === "dark" ? (
                     <Sun className="h-4 w-4" />
                   ) : (
                     <Moon className="h-4 w-4" />
@@ -476,7 +471,7 @@ export default function FlagGame() {
             {gameMode === "multiple-choice" && (
               <MultipleChoice
                 isSmallScreen={isSmallScreen}
-                isDarkMode={isDarkMode}
+                isDarkMode={resolvedTheme === "dark"}
                 currentFlag={currentFlag}
                 selectedAnswer={selectedAnswer}
                 description={description}
@@ -501,7 +496,7 @@ export default function FlagGame() {
             {gameMode === "text-input" && (
               <TextInput
                 isSmallScreen={isSmallScreen}
-                isDarkMode={isDarkMode}
+                isDarkMode={resolvedTheme === "dark"}
                 currentFlag={currentFlag}
                 textAnswer={textAnswer}
                 showResult={showResult}
