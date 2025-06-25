@@ -1,3 +1,5 @@
+import { CONTINENTS } from "./constants"
+
 export interface FlagQuestion {
   id: number
   country: string 
@@ -38,3 +40,5 @@ export interface GameState {
 export type CountryFilter = "un" | "all"
 
 export type QuizLength = number | "all"
+
+export type ContinentFilter = (typeof CONTINENTS)[number] 

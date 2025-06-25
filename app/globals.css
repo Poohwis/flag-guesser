@@ -107,6 +107,7 @@ body {
   border-radius: 20px;
 }
 
+
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(156, 163, 175, 0.3);
 }

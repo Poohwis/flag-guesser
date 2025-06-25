@@ -183,7 +183,7 @@ export function TextInput({
       {/* Show infomation toggle */}
       <div className="md:flex hidden flex-row items-center justify-end gap-x-1 mb-4">
         <button
-          className="text-sm dark:text-white/80 text-gray-700"
+          className="text-sm text-primary/80"
           onClick={toggleInformation}
         >
           show information

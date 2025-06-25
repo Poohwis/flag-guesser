@@ -198,11 +198,21 @@ export const UN_COUNTRIES = [
   "ps",
 ] as const;
 
+export const CONTINENTS = [
+  "Africa",
+  "Antarctica",
+  "Asia",
+  "Europe",
+  "North America",
+  "Oceania",
+  "South America",
+] as const
+
 export type QuizLength = number | "all";
 export type CountryFilter = "un" | "all";
 
 export type CountryInfo = {
-  name: string 
+  name: string;
   altNames?: string[];
   capital?: string; // Optional if not all countries have a known capital
   continent?: string; // Optional
@@ -213,6 +223,14 @@ export type CountryInfo = {
   tld?: string;
 };
 export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
+  aq: {
+    name: "Antarctica",
+    altNames: ["Antarctica", "Antarctic Treaty Area"],
+    continent: "Antarctica",
+    languages: [],
+    areaKm2: 14000000,
+    tld: ".aq",
+  },
   ad: {
     name: "Andorra",
     capital: "Andorra la Vella",
@@ -466,7 +484,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   bl: {
     name: "Saint Barthélemy",
-    altNames : ["Saint Barthelemy", "St. Barthelemy", "St. Barthélemy"],
+    altNames: ["Saint Barthelemy", "St. Barthelemy", "St. Barthélemy"],
     capital: "Gustavia",
     continent: "North America",
     subregion: "Caribbean",
@@ -598,7 +616,12 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   cd: {
     name: "DR Congo",
-    altNames: ["Democratic Republic of the Congo","DRC", "Congo-Kinshasa", "Zaire"],
+    altNames: [
+      "Democratic Republic of the Congo",
+      "DRC",
+      "Congo-Kinshasa",
+      "Zaire",
+    ],
     capital: "Kinshasa",
     continent: "Africa",
     subregion: "Middle Africa",
@@ -619,7 +642,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   cg: {
     name: "Republic of the Congo",
-    altNames: ["Congo",  "Congo-Brazzaville"],
+    altNames: ["Congo", "Congo-Brazzaville"],
     capital: "Brazzaville",
     continent: "Africa",
     subregion: "Middle Africa",
@@ -640,7 +663,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ci: {
     name: "Côte d'Ivoire (Ivory Coast)",
-    altNames: [ "Cote d'Ivoire", "Ivory Coast"],
+    altNames: ["Cote d'Ivoire", "Ivory Coast"],
     capital: "Yamoussoukro",
     continent: "Africa",
     subregion: "Western Africa",
@@ -731,6 +754,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   cw: {
     name: "Curaçao",
+    altNames: ["Curacao"],
     capital: "Willemstad",
     continent: "North America",
     subregion: "Caribbean",
@@ -926,7 +950,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   fk: {
     name: "Falkland Islands",
-    altNames: [ "Malvinas", "Falkland Islands (Malvinas)"],
+    altNames: ["Malvinas", "Falkland Islands (Malvinas)"],
     capital: "Stanley",
     continent: "South America",
     subregion: "South America",
@@ -937,7 +961,11 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   fm: {
     name: "Micronesia",
-    altNames: ["Micronesia (Federated States of)", "Micronesia", "Federated States of Micronesia"],
+    altNames: [
+      "Micronesia (Federated States of)",
+      "Micronesia",
+      "Federated States of Micronesia",
+    ],
     capital: "Palikir",
     continent: "Oceania",
     subregion: "Micronesia",
@@ -978,7 +1006,17 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   gb: {
     name: "United Kingdom",
-    altNames: ["United Kingdom", "UK", "U.K.", "Great Britain", "Britain", "England", "Scotland", "Wales", "Northern Ireland"],
+    altNames: [
+      "United Kingdom",
+      "UK",
+      "U.K.",
+      "Great Britain",
+      "Britain",
+      "England",
+      "Scotland",
+      "Wales",
+      "Northern Ireland",
+    ],
     capital: "London",
     continent: "Europe",
     subregion: "Northern Europe",
@@ -1023,7 +1061,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
     capital: "Saint Peter Port",
     continent: "Europe",
     subregion: "Northern Europe",
-    languages: ["English", "Guernésiais","French" ],
+    languages: ["English", "Guernésiais", "French"],
     currency: { name: "Pound Sterling", code: "GBP", symbol: "£" },
     areaKm2: 78,
     tld: ".gg",
@@ -1281,7 +1319,11 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ir: {
     name: "Iran",
-    altNames: ["Iran (Islamic Republic of)", "Iran", "Islamic Republic of Iran"],
+    altNames: [
+      "Iran (Islamic Republic of)",
+      "Iran",
+      "Islamic Republic of Iran",
+    ],
     capital: "Tehran",
     continent: "Asia",
     subregion: "Southern Asia",
@@ -1412,7 +1454,12 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   kp: {
     name: "North Korea",
-    altNames: ["Korea (Democratic People's Republic of)", "North Korea", "Democratic People's Republic of Korea", "DPRK"],
+    altNames: [
+      "Korea (Democratic People's Republic of)",
+      "North Korea",
+      "Democratic People's Republic of Korea",
+      "DPRK",
+    ],
     capital: "Pyongyang",
     continent: "Asia",
     subregion: "Eastern Asia",
@@ -1423,7 +1470,12 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   kr: {
     name: "South Korea",
-    altNames: ["Korea (Republic of)", "South Korea", "Republic of Korea", "ROK"],
+    altNames: [
+      "Korea (Republic of)",
+      "South Korea",
+      "Republic of Korea",
+      "ROK",
+    ],
     capital: "Seoul",
     continent: "Asia",
     subregion: "Eastern Asia",
@@ -1617,7 +1669,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   mf: {
     name: "Saint Martin",
-    altNames : ["Saint Martin_(island)"],
+    altNames: ["Saint Martin_(island)", "France"],
     capital: "Marigot",
     continent: "North America",
     subregion: "Caribbean",
@@ -1648,7 +1700,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   mk: {
     name: "North Macedonia",
-    altNames: [ "Republic of North Macedonia"],
+    altNames: ["Republic of North Macedonia"],
     capital: "Skopje",
     continent: "Europe",
     subregion: "Southern Europe",
@@ -1691,7 +1743,14 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   mo: {
     name: "Macau",
     capital: "Macau",
-    altNames: ["Macao", "Macau", "Macao SAR", "Macau SAR", "Macao, China", "Macau, China"],
+    altNames: [
+      "Macao",
+      "Macau",
+      "Macao SAR",
+      "Macau SAR",
+      "Macao, China",
+      "Macau, China",
+    ],
     continent: "Asia",
     subregion: "Eastern Asia",
     languages: ["Cantonese", "Portuguese"],
@@ -2043,7 +2102,13 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   ps: {
     name: "Palestine",
     capital: "Jerusalem (claimed), Ramallah (de facto)",
-    altNames: ["Palestine, State of", "Palestine", "State of Palestine", "Occupied Palestinian Territory", "West Bank and Gaza"],
+    altNames: [
+      "Palestine, State of",
+      "Palestine",
+      "State of Palestine",
+      "Occupied Palestinian Territory",
+      "West Bank and Gaza",
+    ],
     continent: "Asia",
     subregion: "Western Asia",
     languages: ["Arabic"],
@@ -2203,7 +2268,14 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   sh: {
     name: "Saint Helena, Ascension and Tristan da Cunha",
-    altNames: ["Saint Helena, Ascension & Tristan da Cunha", "Saint Helena", "Ascension Island", "Tristan da Cunha", "St Helena", "St. Helena"],
+    altNames: [
+      "Saint Helena, Ascension & Tristan da Cunha",
+      "Saint Helena",
+      "Ascension Island",
+      "Tristan da Cunha",
+      "St Helena",
+      "St. Helena",
+    ],
     capital: "Jamestown (Saint Helena)",
     continent: "Africa",
     subregion: "Western Africa",
@@ -2224,6 +2296,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   sj: {
     name: "Svalbard and Jan Mayen",
+    altNames: ["Svalbard & Jan Mayen", "Norway"],
     capital: "Longyearbyen",
     continent: "Europe",
     subregion: "Northern Europe",
@@ -2435,7 +2508,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   tl: {
     name: "Timor-Leste",
-    altNames: [ "East Timor"],
+    altNames: ["East Timor"],
     capital: "Dili",
     continent: "Asia",
     subregion: "South-Eastern Asia",
@@ -2506,7 +2579,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   tw: {
     name: "Taiwan",
-    altNames: [ "Republic of China", "Chinese Taipei"],
+    altNames: ["Republic of China", "Chinese Taipei"],
     capital: "Taipei",
     continent: "Asia",
     subregion: "Eastern Asia",
@@ -2548,7 +2621,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   us: {
     name: "United States of America",
-    altNames: [ "United States", "USA", "U.S.A.", "US", "U.S.", "America"],
+    altNames: ["United States", "USA", "U.S.A.", "US", "U.S.", "America"],
     capital: "Washington, D.C.",
     continent: "North America",
     subregion: "Northern America",
@@ -2579,7 +2652,13 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   va: {
     name: "Vatican City",
-    altNames: ["Holy See (Vatican City State)", "Holy See", "Vatican City State", "Vatican City", "Vatican"],
+    altNames: [
+      "Holy See (Vatican City State)",
+      "Holy See",
+      "Vatican City State",
+      "Vatican City",
+      "Vatican",
+    ],
     capital: "Vatican City",
     continent: "Europe",
     subregion: "Southern Europe",
@@ -2600,7 +2679,10 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   },
   ve: {
     name: "Venezuela",
-    altNames: ["Venezuela (Bolivarian Republic of)", "Bolivarian Republic of Venezuela"],
+    altNames: [
+      "Venezuela (Bolivarian Republic of)",
+      "Bolivarian Republic of Venezuela",
+    ],
     capital: "Caracas",
     continent: "South America",
     subregion: "South America",
@@ -2738,10 +2820,114 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
     capital: "Harare",
     continent: "Africa",
     subregion: "Eastern Africa",
-    languages: ["Shona", "Ndebele", "English"],
+    languages: ["Shona", "Ndebel//e", "English"],
     currency: { name: "Zimbabwean Dollar", code: "ZWL", symbol: "Z$" },
     areaKm2: 390757,
     tld: ".zw",
+  },
+  "gb-sct": {
+    name: "Scotland",
+    capital: "Edinburgh",
+    altNames: ["Scot"],
+    continent: "Europe",
+    subregion: "Northern Europe",
+    languages: ["English", "Scottish Gaelic", "Scots"],
+    currency: {
+      name: "Pound Sterling",
+      code: "GBP",
+      symbol: "£",
+    },
+    areaKm2: 77933,
+    tld: ".uk",
+  },
+  "gb-wls": {
+    name: "Wales",
+    capital: "Cardiff",
+    altNames: ["Cymru"],
+    continent: "Europe",
+    subregion: "Northern Europe",
+    languages: ["English", "Welsh"],
+    currency: {
+      name: "Pound Sterling",
+      code: "GBP",
+      symbol: "£",
+    },
+    areaKm2: 20779,
+    tld: ".uk",
+  },
+  "gb-nir": {
+    name: "Northern Ireland",
+    capital: "Belfast",
+    altNames: ["NI"],
+    continent: "Europe",
+    subregion: "Northern Europe",
+    languages: ["English", "Irish", "Ulster Scots"],
+    currency: {
+      name: "Pound Sterling",
+      code: "GBP",
+      symbol: "£",
+    },
+    areaKm2: 14130,
+    tld: ".uk",
+  },
+  "gb-eng": {
+    name: "England",
+    capital: "London",
+    continent: "Europe",
+    subregion: "Northern Europe",
+    languages: ["English"],
+    currency: {
+      name: "Pound Sterling",
+      code: "GBP",
+      symbol: "£",
+    },
+    areaKm2: 130395,
+    tld: ".uk",
+  },
+  um: {
+    name: "United States Minor Outlying Islands",
+    capital: "Washington, D.C. (administrative)",
+    altNames: [
+      "US Minor Outlying Islands",
+      "UM",
+      "USMOI",
+      "United States",
+      "USA",
+      "U.S.A.",
+      "US",
+      "U.S.",
+      "America",
+    ],
+    continent: "Oceania",
+    subregion: "Micronesia",
+    languages: ["English"],
+    currency: {
+      name: "United States Dollar",
+      code: "USD",
+      symbol: "$",
+    },
+    areaKm2: 34.2,
+    tld: ".um (retired in 2007)",
+  },
+  hm: {
+    name: "Heard Island and McDonald Islands",
+    altNames: ["Heard Island & McDonald Islands", "HIMI", "Australia"],
+    continent: "Antarctica",
+    languages: ["English"],
+    currency: {
+      name: "Australian Dollar",
+      code: "AUD",
+      symbol: "$",
+    },
+    areaKm2: 368,
+    tld: ".hm",
+  },
+  bv: {
+    name: "Bouvet Island",
+    altNames: ["Bouvetøya", "Norway"],
+    continent: "Antarctica",
+    areaKm2: 49,
+    tld: ".bv",
   },
 } as const;
 
@@ -2750,10 +2936,22 @@ export const isUNCountry = (countryCode: string): boolean => {
   return UN_COUNTRIES.includes(countryCode as any);
 };
 
-// Default quiz length
-export const DEFAULT_QUIZ_LENGTH = 10;
+export const altNameUseCountry = ["ge", "mf", "ci"];
+
+export const sameFlagCountry = {
+  sj: "Norwegian archipelago",
+  mf: "Overseas collectivity of France",
+  um: "Groups of islands under U.S jurisdiction",
+  hm: "Uninhabited islands in the Southern Ocean ",
+  bv: "Uninhabited subantarctic volcanic island",
+};
+
+export // Default quiz length
+const DEFAULT_QUIZ_LENGTH = 10;
 export const DEFAULT_COUNTRY_FILTER: CountryFilter = "un";
 
 // Add constants for the total counts
 export const TOTAL_UN_COUNTRIES = 195;
 export const TOTAL_ALL_COUNTRIES = Object.keys(COUNTRY_DATA).length;
+
+

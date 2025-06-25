@@ -36,20 +36,20 @@ export const InformationWithAnswerResultSection = ({
       <motion.div
         initial={{ opacity: 0, y: 5 }}
         whileInView={{ y: 0, opacity: 1 }}
-        className={`mb-2 text-start self-start text-sm font-semibold inline-block px-2 rounded-full  ${
+        className={`mb-2 text-start self-start text-sm font-semibold inline-block px-2 rounded-full bg-black/20  ${
           isCorrect
-            ? "text-green-800 bg-lime-200 border-lime-500"
-            : "text-red-600 bg-rose-200 border-rose-500"
+            ? "text-lime-500 "
+            : "text-red-700 "
         }`}
       >
         {isCorrect ? (
           <span className="flex items-center justify-center gap-x-1">
-            <CheckCircle size={14} className=" text-green-800" />
+            <CheckCircle size={14} className=" text-lime-500" />
             {"Correct"}
           </span>
         ) : (
           <span className="flex items-center justify-center gap-x-1">
-            <XCircle size={14} className=" text-red-800" />
+            <XCircle size={14} className=" text-red-700" />
             The correct answer is {currentFlag.country}
           </span>
         )}
@@ -67,7 +67,7 @@ export const InformationWithAnswerResultSection = ({
       <div className="flex flex-col items-end justify-center">
         <button
           onClick={() => onNextQuestion(false)}
-          className="px-2 rounded-sm text-sm mt-2 w-full md:w-auto bg-black text-white hover:bg-black/80 md:h-8 h-10"
+          className="dark:border px-2 rounded-sm text-sm mt-2 w-full md:w-auto bg-black text-white hover:bg-black/80 md:h-8 h-10"
           disabled={nextDisabled || (!nextImagePreloaded && currentQuestion < totalQuestions - 1)}
         >
           {!nextImagePreloaded && currentQuestion < totalQuestions - 1 ? (
@@ -81,7 +81,7 @@ export const InformationWithAnswerResultSection = ({
             "View Results"
           )}
         </button>
-        <div className="flex items-center text-xs text-gray-500 dark:text-white/70">
+        <div className="flex items-center text-xs text-primary/80">
           or press space
         </div>
       </div>

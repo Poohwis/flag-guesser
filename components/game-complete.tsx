@@ -7,6 +7,9 @@ import { RotateCcw, Moon, Sun, Clock } from "lucide-react";
 import { formatTime } from "../utils";
 import type { GameMode } from "../types";
 import { FlagIcon } from "./flag-icon";
+import { Background } from "./background";
+import { Footer } from "./footer";
+import { SettingPopover } from "./SettingPopover";
 
 interface GameCompleteProps {
   isDarkMode: boolean;
@@ -14,10 +17,14 @@ interface GameCompleteProps {
   score: number;
   totalQuestions: number;
   elapsedTime?: number;
+  backgroundEnabled: boolean;
+  backgroundIndex: number;
   onResetGame: () => void;
   onToggleTheme: () => void;
   correctAnswers: { countryCode: string; country: string }[];
   incorrectAnswers: { countryCode: string; country: string }[];
+  setBackgroundEnabled : (enabled : boolean)=>void
+  setBackgroundIndex : (index : number)=>void
 }
 
 export function GameComplete({
@@ -30,6 +37,9 @@ export function GameComplete({
   onToggleTheme,
   correctAnswers,
   incorrectAnswers,
+  backgroundEnabled,
+  backgroundIndex,
+  setBackgroundEnabled,setBackgroundIndex
 }: GameCompleteProps) {
   const getScoreMessage = () => {
     if (score === totalQuestions) {
@@ -42,32 +52,28 @@ export function GameComplete({
   };
 
   return (
-    <div className={isDarkMode ? "dark" : ""}>
-      <div
-        className={`min-h-screen flex items-center justify-center p-4 transition-colors ${
-          isDarkMode
-            ? "bg-gradient-to-t from-violet-400 to-black"
-            : "bg-gradient-to-t from-white to-orange-200"
-        }`}
-      >
+    <Background
+      backgroundEnabled={backgroundEnabled}
+      backgroundIndex={backgroundIndex}
+    >
+      <div className={`w-full min-h-screen flex items-center justify-center }`}>
         <Card className="w-full max-w-2xl backdrop-blur-xl bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl">
           <CardHeader className="text-center relative">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onToggleTheme}
-              className="absolute top-4 right-4 p-2"
-            >
-              {isDarkMode ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </Button>
-            <CardTitle className="text-2xl font-bold text-green-600 dark:text-green-400">
-              Game Complete!
+              <div
+               className="absolute top-4 right-4 p-2" 
+              >
+
+              <SettingPopover
+                backgroundEnabled={backgroundEnabled}
+                onToggleBackgroundEnabled={setBackgroundEnabled}
+                onBackgroundChange={setBackgroundIndex}
+                backgroundIndex={backgroundIndex}
+              />
+              </div>
+            <CardTitle className=" font-bold text-green-600 dark:text-green-400 moirai text-5xl">
+              Quiz Complete!
             </CardTitle>
-            <div className="flex flex-col items-center gap-2 mt-2">
+            <div className="flex flex-col items-center gap-2 mt-2 translate-y-3">
               <Badge
                 variant="outline"
                 className="backdrop-blur-sm bg-white/20 dark:bg-gray-700/20 border-white/30 dark:border-gray-600/30"
@@ -76,7 +82,7 @@ export function GameComplete({
                   ? "Multiple Choice Mode"
                   : "Text Input Mode"}
               </Badge>
-              <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+              <div className="flex items-center gap-1 text-primary/80">
                 <Clock className="h-4 w-4" />
                 <span className="font-mono text-sm">
                   Time: {formatTime(elapsedTime)}
@@ -164,27 +170,16 @@ export function GameComplete({
 
             <Button
               onClick={onResetGame}
-              className="w-full backdrop-blur-sm group bg-blue-600/80 hover:bg-blue-700/80 border border-blue-500/30 dark:text-white/80 hover:dark:text-white"
+              className="w-full backdrop-blur-sm group text-white bg-orange-700/80 hover:bg-orange-800/80 border border-orange-600/30
+              dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-[#09080e]/30"
             >
               <RotateCcw className="w-4 h-4 mr-2 group-hover:-rotate-[360deg] transition duration-1000" />
               Play Again
             </Button>
-            <div className="pt-4 text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200/30 dark:border-gray-700/30 mt-2">
-              <p>
-                Flag images and country data from{" "}
-                <a
-                  href="https://flagpedia.net"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline dark:text-blue-400"
-                >
-                  Flagpedia.net
-                </a>
-              </p>
-            </div>
+            <Footer />
           </CardContent>
         </Card>
       </div>
-    </div>
+    </Background>
   );
 }

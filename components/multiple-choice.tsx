@@ -149,7 +149,7 @@ export function MultipleChoice({
       {/* Show infomation toggle */}
       <div className="md:flex hidden flex-row items-center justify-end gap-x-1 mb-4">
         <button
-          className="text-sm dark:text-white/80 text-gray-700"
+          className="text-sm text-primary/80"
           onClick={toggleInformation}
         >
           show information
@@ -205,7 +205,7 @@ export function MultipleChoice({
           </div>
         ) : (
           <div className="flex h-full flex-col justify-center">
-            <div className="text-center text-gray-400 dark:text-gray-500 text-sm">
+            <div className="text-center text-sm text-primary/80">
               {!currentImageLoaded
                 ? "Loading flag image..."
                 : "Click an answer above or press number on your keyboard to answer"}

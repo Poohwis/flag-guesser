@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { ExternalLink, Plus, Minus } from "lucide-react";
 import { useState, useRef, useMemo } from "react";
-import {motion} from "motion/react"
+import { motion } from "motion/react";
 
 interface MapDisplayProps {
   countryName: string;
@@ -19,7 +19,7 @@ export function MapDisplay({ countryName, isDarkMode }: MapDisplayProps) {
 
   const baseUrl = "https://maps.googleapis.com/maps/api/staticmap";
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const darkMapId = "74a808c119d30ae0ee259c09";
+  const darkMapId = "74a608c119d30ae0ee259c09";
   const lightMapId = "74a808c119d30ae08b4ad7cd";
 
   const cacheKey = `${encodeURIComponent(
@@ -40,6 +40,7 @@ export function MapDisplay({ countryName, isDarkMode }: MapDisplayProps) {
 
     imageCache.current[cacheKey] = newMapUrl; // or finalMapUrl if you added marker
     console.log(`MapDisplay: Cache miss for ${cacheKey}, generating new URL.`);
+    console.log(newMapUrl)
     return newMapUrl; // or finalMapUrl
   }, [
     countryName,
@@ -58,10 +59,11 @@ export function MapDisplay({ countryName, isDarkMode }: MapDisplayProps) {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
-     className="relative w-[260px] h-[312px] shrink-0 ">
+      className="relative w-[260px] h-[312px] shrink-0 "
+    >
       <button className="absolute right-1 top-1 p-2 rounded-md text-white bg-black hover:bg-black/80 transition-colors ">
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

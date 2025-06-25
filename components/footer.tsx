@@ -1,0 +1,14 @@
+export function Footer() {
+  return (
+    <div className="mt-auto pt-2 text-xs text-center text-primary/70">
+      <a
+        href="https://flagpedia.net"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline"
+      >
+        Flags from Flagpedia.net
+      </a>
+    </div>
+  );
+}

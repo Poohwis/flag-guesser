@@ -4,8 +4,8 @@ import "./globals.css";
 import { Providers } from "@/providers";
 
 const notosans = Noto_Sans({
-  subsets: ["latin"], 
-  weight: ["400", "700"], 
+  subsets: ["latin"],
+  weight: ["400", "700"],
   display: "swap",
 });
 const moirai = Grand_Hotel({
@@ -29,13 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-      </head>
+      <head></head>
       <body className={`${notosans.className} ${moirai.variable}`}>
-        <Providers>
-
-        {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Home, Clock } from "lucide-react";
+import { Moon, Sun, Home, Clock, Ellipsis } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { ModeSelection } from "./components/mode-selection";
@@ -20,13 +20,24 @@ import {
   getAllCountries,
   formatTime,
   fetchWikiMediaCountryDescription,
+  getFlagCount,
 } from "./utils";
 import {
   DEFAULT_QUIZ_LENGTH,
   type QuizLength,
   DEFAULT_COUNTRY_FILTER,
+  altNameUseCountry,
+  TOTAL_UN_COUNTRIES,
+  TOTAL_ALL_COUNTRIES,
 } from "./constants";
-import type { GameMode, FlagQuestion, CountryFilter } from "./types";
+import type {
+  GameMode,
+  FlagQuestion,
+  CountryFilter,
+  ContinentFilter,
+} from "./types";
+import { Background } from "./components/background";
+import { SettingPopover } from "./components/SettingPopover";
 
 export default function FlagGame() {
   // Game state
@@ -47,6 +58,9 @@ export default function FlagGame() {
   const [countryFilter, setCountryFilter] = useState<CountryFilter>(
     DEFAULT_COUNTRY_FILTER
   );
+  const [continentFilter, setContinentFilter] =
+    useState<ContinentFilter | null>(null);
+
   const [multipleChoiceOptions, setMultipleChoiceOptions] = useState<number>(4);
 
   // Track correct and incorrect answers
@@ -79,7 +93,10 @@ export default function FlagGame() {
   const currentFlag = flagQuestions[currentQuestion];
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [nextDisable, setNextDisabled] = useState(false)
+  const [nextDisable, setNextDisabled] = useState(false);
+
+  const [backgroundEnabled, setBackgroundEnabled] = useState(true);
+  const [backgroundIndex, setBackgroundIndex] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -107,15 +124,45 @@ export default function FlagGame() {
           return answer === main || alt.includes(answer);
         })();
 
+  const [flagCount, setFlagCount] = useState<{ un: number; all: number }>({
+    un: TOTAL_UN_COUNTRIES,
+    all: TOTAL_ALL_COUNTRIES,
+  });
+
   // Initialize questions
+  const [prevContinent, setPrevContinent] = useState<ContinentFilter | null>(
+    null
+  );
+  const [prevCountryFilter, setPrevCountryFilter] = useState<"un" | "all">(
+    "un"
+  );
+
+  useEffect(() => {
+    const { un, all } = getFlagCount(continentFilter);
+    setFlagCount({ un, all });
+
+    if (continentFilter && continentFilter !== prevContinent) {
+      setQuizLength(countryFilter === "un" ? un : all);
+    } else if (
+      (!continentFilter && prevContinent !== null) ||
+      countryFilter !== prevCountryFilter
+    ) {
+      setQuizLength(10);
+    }
+
+    setPrevContinent(continentFilter);
+    setPrevCountryFilter(countryFilter);
+  }, [continentFilter, countryFilter]);
+
   useEffect(() => {
     const questions = generateQuestions(
       quizLength,
       countryFilter,
+      continentFilter,
       multipleChoiceOptions
     );
     setFlagQuestions(questions);
-  }, [quizLength, countryFilter, multipleChoiceOptions]);
+  }, [quizLength, countryFilter, continentFilter, multipleChoiceOptions]);
 
   // Start timer when game mode is selected
   useEffect(() => {
@@ -146,24 +193,28 @@ export default function FlagGame() {
   }, [currentQuestion, flagQuestions, currentImageLoaded]);
 
   // Fetch country description
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_KNOWLEDGE_GRAPH_SEARCH_API_KEY;
-
   useEffect(() => {
-    if (currentFlag?.country && apiKey) {
+    if (currentFlag?.country) {
       setLoadingDescription(true);
       setDescription(null); // Clear previous description
       setSourceUrl(null); // Clear previous source URL
 
       if (showInfomation) {
-        fetchWikiMediaCountryDescription(currentFlag.country).then((result) => {
+        const country =
+          altNameUseCountry.includes(currentFlag.countryCode) &&
+          Array.isArray(currentFlag.altNames) &&
+          currentFlag.altNames.length > 0
+            ? currentFlag.altNames[0]
+            : currentFlag.country;
+        fetchWikiMediaCountryDescription(country).then((result) => {
           setDescription(result.description);
           setSourceUrl(result.sourceUrl);
           setExtract(result.extract);
-          setLoadingDescription(false)
+          setLoadingDescription(false);
         });
       }
     }
-  }, [currentFlag, apiKey, showInfomation]);
+  }, [currentFlag, showInfomation]);
 
   // Handlers
   const handleModeSelect = (mode: GameMode) => {
@@ -180,27 +231,19 @@ export default function FlagGame() {
   };
 
   const handleToggleSetShowInformation = () => {
-    setShowInformation(!showInfomation);
+    setShowInformation((prev) => !prev);
   };
 
   const handleQuizLengthChange = (length: QuizLength | number) => {
-    if (typeof length === "number") {
-      // Ensure the number is either 10, 20, or another valid number
-      if (length <= 10) {
-        setQuizLength(10);
-      } else if (length <= 20) {
-        setQuizLength(20);
-      } else {
-        // For custom numbers above 20
-        setQuizLength(length as QuizLength);
-      }
-    } else {
-      setQuizLength(length);
-    }
+    setQuizLength(length);
   };
 
   const handleCountryFilterChange = (filter: CountryFilter) => {
     setCountryFilter(filter);
+  };
+
+  const handleContinentFilterChange = (filter: ContinentFilter | null) => {
+    setContinentFilter(filter);
   };
 
   const handleMultipleChoiceOptionsChange = (options: number) => {
@@ -317,12 +360,13 @@ export default function FlagGame() {
     setElapsedTime(0);
     setFinalTime(0);
     setCorrectAnswers([]);
+    setContinentFilter(null);
     setIncorrectAnswers([]);
 
-    // Keep the current quiz length and country filter
     const newQuestions = generateQuestions(
       quizLength,
       countryFilter,
+      continentFilter,
       multipleChoiceOptions
     );
     setFlagQuestions(newQuestions);
@@ -332,7 +376,7 @@ export default function FlagGame() {
     handleBackToMenu();
   };
 
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { setTheme, resolvedTheme } = useTheme();
   const handleToggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
@@ -345,6 +389,8 @@ export default function FlagGame() {
   if (!gameMode) {
     return (
       <ModeSelection
+        flagCount={flagCount}
+        continentFilter={continentFilter}
         isDarkMode={resolvedTheme === "dark"}
         autocompleteEnabled={autocompleteEnabled}
         quizLength={quizLength}
@@ -358,6 +404,11 @@ export default function FlagGame() {
         onCountryFilterChange={handleCountryFilterChange}
         onMultipleChoiceOptionsChange={handleMultipleChoiceOptionsChange}
         onStartGame={handleStartGame}
+        onContinentFilterChange={handleContinentFilterChange}
+        backgroundEnabled={backgroundEnabled}
+        backgroundIndex={backgroundIndex}
+        setBackgroundEnabled={setBackgroundEnabled}
+        setBackgroundIndex={setBackgroundIndex}
       />
     );
   }
@@ -375,179 +426,158 @@ export default function FlagGame() {
         onToggleTheme={handleToggleTheme}
         correctAnswers={correctAnswers}
         incorrectAnswers={incorrectAnswers}
+        backgroundEnabled={backgroundEnabled}
+        backgroundIndex={backgroundIndex}
+        setBackgroundEnabled={setBackgroundEnabled}
+        setBackgroundIndex={setBackgroundIndex}
       />
     );
   }
 
   // Main Game Screen
   return (
-    <div>
-      <div
-        className={`min-h-screen flex items-center justify-center p-4 transition-colors ${
-          resolvedTheme === "dark"
-            ? "bg-gradient-to-t from-violet-400 to-black"
-            : "bg-gradient-to-t from-orange-100 to-orange-200"
-        }`}
-      >
-        <Card className="w-full max-w-3xl min-h-[600px] flex flex-col backdrop-blur-xl bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl">
-          <CardHeader className="md:px-6 md:py-6 px-6 py-2">
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-3xl font-bold moirai ">
-                Flag Quizzer
-              </CardTitle>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleBackToMenu}
-                  className="p-2"
-                  title="Back to Main Menu"
-                >
-                  <Home className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleToggleTheme}
-                  className="p-2"
-                  title="Toggle Theme"
-                >
-                  {resolvedTheme === "dark" ? (
-                    <Sun className="h-4 w-4" />
-                  ) : (
-                    <Moon className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
-              <div className="flex flex-wrap gap-2">
-                <Badge
-                  variant="outline"
-                  className="backdrop-blur-sm bg-white/20 dark:bg-gray-700/20 border-white/30 dark:border-gray-600/30"
-                >
-                  {gameMode === "multiple-choice"
-                    ? "Multiple Choice"
-                    : "Text Input"}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="backdrop-blur-sm bg-white/20 dark:bg-gray-700/20 border-white/30 dark:border-gray-600/30"
-                >
-                  Question {currentQuestion + 1}/{flagQuestions.length}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="backdrop-blur-sm bg-white/20 dark:bg-gray-700/20 border-white/30 dark:border-gray-600/30"
-                >
-                  Score: {score}
-                </Badge>
-              </div>
-              <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
-                <Clock className="h-4 w-4" />
-                <span className="font-mono text-sm">
-                  {formatTime(elapsedTime)}
-                </span>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col">
-            {/* Flag Display */}
-            <div className="text-center">
-              <h2 className="text-lg font-semibold mb-4">
-                Which country does this flag belong to?
-              </h2>
-              <div className="flex justify-center">
-                <FlagImage
-                  countryCode={currentFlag.countryCode}
-                  country={currentFlag.country}
-                  onLoad={handleCurrentImageLoad}
-                  isLoading={isTransitioning}
-                />
-              </div>
-            </div>
-
-            {/* Game Mode Components */}
-            {gameMode === "multiple-choice" && (
-              <MultipleChoice
-                isSmallScreen={isSmallScreen}
-                isDarkMode={resolvedTheme === "dark"}
-                currentFlag={currentFlag}
-                selectedAnswer={selectedAnswer}
-                description={description}
-                extract={extract}
-                sourceUrl={sourceUrl}
-                loadingDescription={loadingDescription}
-                showInformation={showInfomation}
-                toggleInformation={handleToggleSetShowInformation}
-                showResult={showResult}
-                isCorrect={isCorrect}
-                currentImageLoaded={currentImageLoaded}
-                nextImagePreloaded={nextImagePreloaded}
-                currentQuestion={currentQuestion}
-                totalQuestions={flagQuestions.length}
-                onAnswerSelect={handleAnswerSelect}
-                onNextQuestion={handleNextQuestion}
-                nextDisabled={nextDisable}
-                setNextDisabled={setNextDisabled}
-              />
-            )}
-
-            {gameMode === "text-input" && (
-              <TextInput
-                isSmallScreen={isSmallScreen}
-                isDarkMode={resolvedTheme === "dark"}
-                currentFlag={currentFlag}
-                textAnswer={textAnswer}
-                showResult={showResult}
-                isCorrect={isCorrect}
-                description={description}
-                extract={extract}
-                sourceUrl={sourceUrl}
-                loadingDescription={loadingDescription}
-                showInformation={showInfomation}
-                toggleInformation={handleToggleSetShowInformation}
-                currentImageLoaded={currentImageLoaded}
-                nextImagePreloaded={nextImagePreloaded}
-                currentQuestion={currentQuestion}
-                totalQuestions={flagQuestions.length}
-                autocompleteEnabled={autocompleteEnabled}
-                suggestions={suggestions}
-                selectedSuggestionIndex={selectedSuggestionIndex}
-                onTextInputChange={handleTextInputChange}
-                onTextSubmit={handleTextSubmit}
-                onSuggestionClick={handleSuggestionClick}
-                onNextQuestion={handleNextQuestion}
-                onSuggestionIndexChange={setSelectedSuggestionIndex}
-                nextDisabled={nextDisable}
-                setNextDisabled={setNextDisabled}
-                onClearSuggestions={() => {
-                  setSuggestions([]);
-                  setSelectedSuggestionIndex(-1);
-                }}
-              />
-            )}
-
-            {/* Answer History */}
-            <AnswerHistory
-              correctAnswers={correctAnswers}
-              incorrectAnswers={incorrectAnswers}
-            />
-
-            {/* Credit line */}
-            <div className="mt-auto pt-2 text-xs text-center text-gray-500 dark:text-gray-400">
-              <a
-                href="https://flagpedia.net"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
+    <Background
+      backgroundIndex={backgroundIndex}
+      backgroundEnabled={backgroundEnabled}
+    >
+      <Card className="w-full max-w-3xl min-h-[600px] flex flex-col backdrop-blur-xl bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl">
+        <CardHeader className="md:px-6 md:py-6 px-6 py-2">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-3xl moirai">Flag Quizzer</CardTitle>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleBackToMenu}
+                className="p-2"
+                title="Back to Main Menu"
               >
-                Flags from Flagpedia.net
-              </a>
+                <Home className="h-4 w-4" />
+              </Button>
+              <SettingPopover
+                backgroundEnabled={backgroundEnabled}
+                onToggleBackgroundEnabled={setBackgroundEnabled}
+                handleNextQuestion={handleNextQuestion}
+                onBackgroundChange={setBackgroundIndex}
+                backgroundIndex={backgroundIndex}
+              />
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+          </div>
+          <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
+            <div className="flex flex-wrap gap-2">
+              <Badge
+                variant="outline"
+                className="backdrop-blur-sm bg-white/20 dark:bg-gray-700/20 border-white/30 dark:border-gray-600/30"
+              >
+                {gameMode === "multiple-choice"
+                  ? "Multiple Choice"
+                  : "Text Input"}
+              </Badge>
+              <Badge
+                variant="outline"
+                className="backdrop-blur-sm bg-white/20 dark:bg-gray-700/20 border-white/30 dark:border-gray-600/30"
+              >
+                Question {currentQuestion + 1}/{flagQuestions.length}
+              </Badge>
+              <Badge
+                variant="outline"
+                className="backdrop-blur-sm bg-white/20 dark:bg-gray-700/20 border-white/30 dark:border-gray-600/30"
+              >
+                Score: {score}
+              </Badge>
+            </div>
+            <div className="flex items-center gap-1 text-primary/80">
+              <Clock className="h-4 w-4" />
+              <span className="font-mono text-sm ">
+                {formatTime(elapsedTime)}
+              </span>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6 flex-1 flex flex-col">
+          {/* Flag Display */}
+          <div className="text-center">
+            <h2 className="text-lg font-semibold mb-4">
+              This flag represents which place?
+            </h2>
+            <div className="flex justify-center">
+              <FlagImage
+                countryCode={currentFlag.countryCode}
+                country={currentFlag.country}
+                onLoad={handleCurrentImageLoad}
+                isLoading={isTransitioning}
+              />
+            </div>
+          </div>
+
+          {/* Game Mode Components */}
+          {gameMode === "multiple-choice" && (
+            <MultipleChoice
+              isSmallScreen={isSmallScreen}
+              isDarkMode={resolvedTheme === "dark"}
+              currentFlag={currentFlag}
+              selectedAnswer={selectedAnswer}
+              description={description}
+              extract={extract}
+              sourceUrl={sourceUrl}
+              loadingDescription={loadingDescription}
+              showInformation={showInfomation}
+              toggleInformation={handleToggleSetShowInformation}
+              showResult={showResult}
+              isCorrect={isCorrect}
+              currentImageLoaded={currentImageLoaded}
+              nextImagePreloaded={nextImagePreloaded}
+              currentQuestion={currentQuestion}
+              totalQuestions={flagQuestions.length}
+              onAnswerSelect={handleAnswerSelect}
+              onNextQuestion={handleNextQuestion}
+              nextDisabled={nextDisable}
+              setNextDisabled={setNextDisabled}
+            />
+          )}
+
+          {gameMode === "text-input" && (
+            <TextInput
+              isSmallScreen={isSmallScreen}
+              isDarkMode={resolvedTheme === "dark"}
+              currentFlag={currentFlag}
+              textAnswer={textAnswer}
+              showResult={showResult}
+              isCorrect={isCorrect}
+              description={description}
+              extract={extract}
+              sourceUrl={sourceUrl}
+              loadingDescription={loadingDescription}
+              showInformation={showInfomation}
+              toggleInformation={handleToggleSetShowInformation}
+              currentImageLoaded={currentImageLoaded}
+              nextImagePreloaded={nextImagePreloaded}
+              currentQuestion={currentQuestion}
+              totalQuestions={flagQuestions.length}
+              autocompleteEnabled={autocompleteEnabled}
+              suggestions={suggestions}
+              selectedSuggestionIndex={selectedSuggestionIndex}
+              onTextInputChange={handleTextInputChange}
+              onTextSubmit={handleTextSubmit}
+              onSuggestionClick={handleSuggestionClick}
+              onNextQuestion={handleNextQuestion}
+              onSuggestionIndexChange={setSelectedSuggestionIndex}
+              nextDisabled={nextDisable}
+              setNextDisabled={setNextDisabled}
+              onClearSuggestions={() => {
+                setSuggestions([]);
+                setSelectedSuggestionIndex(-1);
+              }}
+            />
+          )}
+
+          {/* Answer History */}
+          <AnswerHistory
+            correctAnswers={correctAnswers}
+            incorrectAnswers={incorrectAnswers}
+          />
+        </CardContent>
+      </Card>
+    </Background>
   );
 }

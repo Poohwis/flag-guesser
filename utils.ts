@@ -6,7 +6,7 @@ import {
   TOTAL_ALL_COUNTRIES,
   CountryInfo,
 } from "./constants";
-import type { FlagQuestion, CountryFilter } from "./types";
+import type { FlagQuestion, CountryFilter, ContinentFilter } from "./types";
 
 // Image preloader utility
 export const preloadImage = (src: string): Promise<void> => {
@@ -48,6 +48,7 @@ export const getRandomWrongOptions = (
 export const generateQuestions = (
   quizLength: QuizLength = 20,
   countryFilter: CountryFilter = "un",
+  continentFilter: ContinentFilter | null = null,
   optionsCount = 4
 ): FlagQuestion[] => {
   let entries = Object.entries(COUNTRY_DATA);
@@ -57,8 +58,17 @@ export const generateQuestions = (
     entries = entries.filter(([code]) => isUNCountry(code));
   }
 
+  if (continentFilter) {
+    entries = entries.filter(
+      (country) => country[1].continent === continentFilter
+    );
+  }
+
   // Shuffle the entries
   const shuffled = [...entries].sort(() => 0.5 - Math.random());
+
+  // const watch = [ "sj", "mf" ,"hm", "um", "bv", "ad"]
+  // const shuffled = [...entries].filter(c=> watch.includes(c[0]))
 
   // Determine how many entries to use
   let selectedEntries: [string, CountryInfo][];
@@ -100,6 +110,20 @@ export const generateQuestions = (
       options: options,
     };
   });
+};
+
+export const getFlagCount = (continentFilter: ContinentFilter | null) => {
+  if (!continentFilter) {
+    return { un: TOTAL_UN_COUNTRIES, all: TOTAL_ALL_COUNTRIES };
+  }
+  const allEntries = Object.entries(COUNTRY_DATA);
+  const allFlagLength = allEntries.filter(
+    (country) => country[1].continent === continentFilter
+  ).length;
+  const unFlagLength = allEntries
+    .filter((country) => country[1].continent === continentFilter)
+    .filter(([code]) => isUNCountry(code)).length;
+  return { un: unFlagLength, all: allFlagLength };
 };
 
 // Preload next question's image
@@ -213,7 +237,9 @@ export const fetchWikiMediaCountryDescription = async (
 }> => {
   try {
     const response = await fetch(
-      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(countryName)}`
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
+        countryName
+      )}`
     );
 
     if (!response.ok) {
