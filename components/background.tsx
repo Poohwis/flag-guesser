@@ -57,13 +57,13 @@ export function Background({
       ) : (
         <div className="absolute inset-0 bg-black opacity-20 pointer-events-none z-0" />
       )}
-      {/* <div
+      <div
         style={{
-          backgroundImage: "url('/images/wallpaper/grain.webp')",
+          backgroundImage: "url('/images/wallpaper/film-grain2.webp')",
           mixBlendMode: "overlay",
         }}
-        className="absolute inset-0 bg-repeat opacity-20 pointer-events-none bg-cover"
-      />  */}
+        className="absolute inset-0 bg-repeat opacity-[0.15] pointer-events-none bg-cover"
+      />
       {children}
     </div>
   );

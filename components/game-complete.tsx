@@ -70,7 +70,7 @@ export function GameComplete({
                 backgroundIndex={backgroundIndex}
               />
               </div>
-            <CardTitle className=" font-bold text-green-600 dark:text-green-400 moirai text-5xl">
+            <CardTitle className="bg-gray-800 self-center px-2 py-2 rounded-lg shadow shadow-black font-bold text-green-600 dark:text-green-400 moirai text-5xl">
               Quiz Complete!
             </CardTitle>
             <div className="flex flex-col items-center gap-2 mt-2 translate-y-3">
@@ -171,7 +171,7 @@ export function GameComplete({
             <Button
               onClick={onResetGame}
               className="w-full backdrop-blur-sm group text-white bg-orange-700/80 hover:bg-orange-800/80 border border-orange-600/30
-              dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-[#09080e]/30"
+              dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-white/30 shadow-sm shadow-black dark:border dark:border-gray-800"
             >
               <RotateCcw className="w-4 h-4 mr-2 group-hover:-rotate-[360deg] transition duration-1000" />
               Play Again

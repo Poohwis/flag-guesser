@@ -204,7 +204,7 @@ export function TextInput({
       >
         {showResult ? (
           <div className="flex flex-col">
-            {showInformation && isSmallScreen ? (
+            {showInformation && !isSmallScreen ? (
               <InformationWithAnswerResultSection
                 isCorrect={isCorrect}
                 currentFlag={currentFlag}

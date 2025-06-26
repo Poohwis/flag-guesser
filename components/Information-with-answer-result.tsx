@@ -36,10 +36,10 @@ export const InformationWithAnswerResultSection = ({
       <motion.div
         initial={{ opacity: 0, y: 5 }}
         whileInView={{ y: 0, opacity: 1 }}
-        className={`mb-2 text-start self-start text-sm font-semibold inline-block px-2 rounded-full bg-black/20  ${
+        className={`mb-2 text-start self-start text-sm font-semibold inline-block px-2 rounded-full bg-black/50 ${
           isCorrect
-            ? "text-lime-500 "
-            : "text-red-700 "
+            ? "text-lime-500"
+            : "text-red-700"
         }`}
       >
         {isCorrect ? (
@@ -49,7 +49,7 @@ export const InformationWithAnswerResultSection = ({
           </span>
         ) : (
           <span className="flex items-center justify-center gap-x-1">
-            <XCircle size={14} className=" text-red-700" />
+            <XCircle size={14} className="text-red-700" />
             The correct answer is {currentFlag.country}
           </span>
         )}

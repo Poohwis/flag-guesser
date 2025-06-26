@@ -35,11 +35,11 @@ export function CountryInformation({
       whileInView={{ opacity: 1 }}
       className="relative flex md:flex-row w-full h-auto gap-2 flex-col items-center md:items-start bg-white/20 p-2 rounded-xl"
     >
-      <div className="z-10 absolute right-2 -top-4 font-bold text-base bg-black text-white px-2 py-1 rounded-full flex items-center justify-center">
+      <div className="z-10 absolute right-2 -top-4 font-bold text-base bg-black text-white px-3 py-1 rounded-full flex items-center justify-center">
         {/* <span className="uppercase text-sm font-mono bg-white text-black rounded-full px-1 mr-1"> */}
         {/* {currentFlag.countryCode} */}
         {/* </span> */}
-        <span className="bg- text-white/80 mr-1 px-1 ">{emoji}</span>
+        <span className="text-white/80 mr-1 px-1 ">{emoji}</span>
         {currentFlag.country}
       </div>
       <MapDisplay countryName={currentFlag.country} isDarkMode={isDarkMode} />

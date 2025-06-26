@@ -105,19 +105,28 @@ export function ModeSelection({
               </div>
               <h1 className="z-30">FlagQuizzer</h1>
             </CardTitle>
-            <div className="text-primary-foreground/80 translate-y-1 dark:text-white/80 px-2 bg-black rounded-full self-center">
+            <div
+              className=" translate-y-1 text-sm text-white/80 px-4 shadow-lg
+             shadow-orange-200 border-b-2 border-orange-100 dark:shadow-purple-400 dark:border-b-2
+              dark:border-purple-200 bg-black/40 rounded-full self-center"
+            >
               The Ultimate Flag Challenge!
             </div>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4">
             {/* Country Filter Selection */}
-            <Card 
-            className="backdrop-blur-md bg-gray-50/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-600/20"
+            <Card
+              className="border-none bg-transparent shadow-none"
+              // className="backdrop-blur-md bg-gray-50/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-600/20"
             >
               <CardContent className="p-4">
-                <div className="space-y-3">
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  className="space-y-3"
+                >
                   <div className="flex flex-row items-center justify-between">
-                    <Label className="text-sm font-semibold">
+                    <Label className="px-2 rounded-sm bg-white/50 shadow-sm shadow-gray-600 dark:shadow-none text-sm font-semibold text-black dark:text-white">
                       Flag Selection
                     </Label>
                     <ContinentFilterOptions
@@ -134,11 +143,13 @@ export function ModeSelection({
                   >
                     <Label
                       htmlFor="un-countries"
-                      className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all cursor-pointer backdrop-blur-sm ${
-                        countryFilter === "un"
-                          ? "bg-blue-50/70 border-blue-500 dark:bg-blue-900/30 dark:border-blue-400"
-                          : "bg-white/50 border-gray-200/50 hover:border-gray-300 dark:bg-gray-800/50 dark:border-gray-700/50 dark:hover:border-gray-600"
-                      }
+                      className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all cursor-pointer 
+                        hover:shadow-lg backdrop-blur-sm
+                         ${
+                           countryFilter === "un"
+                             ? "bg-blue-50/70 border-blue-500 dark:bg-blue-900/30 dark:border-blue-400"
+                             : "bg-white/50  border-gray-200/50 hover:border-blue-300 dark:bg-gray-800/50 dark:border-gray-700/50 dark:hover:border-gray-600"
+                         }
                           ${flagCount.un === 0 ? "opacity-20" : ""}`}
                     >
                       <RadioGroupItem
@@ -166,10 +177,10 @@ export function ModeSelection({
                     </Label>
                     <Label
                       htmlFor="all-countries"
-                      className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all cursor-pointer backdrop-blur-sm ${
+                      className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all cursor-pointer backdrop-blur-sm hover:shadow-lg ${
                         countryFilter === "all"
                           ? "bg-green-50/70 border-green-500 dark:bg-green-900/30 dark:border-green-400"
-                          : "bg-white/50 border-gray-200/50 hover:border-gray-300 dark:bg-gray-800/50 dark:border-gray-700/50 dark:hover:border-gray-600"
+                          : "bg-white/50 border-gray-200/50 hover:border-green-300 dark:bg-gray-800/50 dark:border-gray-700/50 dark:hover:border-gray-600"
                       }`}
                     >
                       <RadioGroupItem
@@ -190,12 +201,15 @@ export function ModeSelection({
                       </span>
                     </Label>
                   </RadioGroup>
-                </div>
+                </motion.div>
               </CardContent>
             </Card>
 
             {/* Quiz Length Selection */}
-            <Card className=" backdrop-blur-md bg-gray-50/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-600/20">
+            <Card
+              // className=" backdrop-blur-md bg-gray-50/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-600/20"
+              className="border-none bg-transparent shadow-none"
+            >
               <CardContent className="p-4 h-[220px]">
                 <AnimatePresence mode="popLayout">
                   {continentFilter && (
@@ -205,7 +219,7 @@ export function ModeSelection({
                       whileInView={{
                         opacity: 1,
                         y: 0,
-                        transition: { delay: 0.3 },
+                        transition: { delay: 0.1 },
                       }}
                       exit={{ opacity: 0, y: -10 }}
                       className="flex items-center justify-center"
@@ -237,19 +251,18 @@ export function ModeSelection({
                       exit={{ opacity: 0, y: 10 }}
                       className="space-y-3 "
                     >
-                      <Label className="text-sm font-semibold">
+                      <Label className="px-2 rounded-sm bg-white/50 shadow-sm shadow-gray-600 dark:shadow-none text-sm font-semibold text-black dark:text-white">
                         Quiz Option
                       </Label>
                       <div className="flex-1 grid grid-cols-2 gap-3">
                         <Button
                           onClick={() => onQuizLengthChange(10)}
-                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
-                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700
-                       ${
-                         quizLength === 10
-                           ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
-                           : "text-black dark:text-white"
-                       }`}
+                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1  transition-all hover:shadow-lg
+                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 hover:bg-[#2d2d2c] hover:text-white border-2 border-gray-200/50 dark:border-gray-700 ${
+                        quizLength === 10
+                          ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white dark:border-gray-300"
+                          : "text-black dark:text-white"
+                      }`}
                         >
                           <span className="font-semibold">Mini</span>
                           <span className="text-xs opacity-75">
@@ -267,15 +280,15 @@ export function ModeSelection({
                               )
                             )
                           }
-                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
-                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700 ${
+                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 transition-all hover:shadow-lg
+                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 hover:bg-[#2d2d2c] hover:text-white border-2 border-gray-200/50 dark:border-gray-700 ${
                         quizLength ===
                         Math.floor(
                           (countryFilter === "un"
                             ? TOTAL_UN_COUNTRIES
                             : TOTAL_ALL_COUNTRIES) / 4
                         )
-                          ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
+                          ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white dark:border-gray-300"
                           : "text-black dark:text-white"
                       }`}
                         >
@@ -300,15 +313,15 @@ export function ModeSelection({
                               )
                             )
                           }
-                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
-                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700 ${
+                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 transition-all hover:shadow-lg
+                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 hover:bg-[#2d2d2c] hover:text-white border-2 border-gray-200/50 dark:border-gray-700 ${
                         quizLength ===
                         Math.floor(
                           (countryFilter === "un"
                             ? TOTAL_UN_COUNTRIES
                             : TOTAL_ALL_COUNTRIES) / 2
                         )
-                          ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
+                          ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white dark:border-gray-300"
                           : "text-black dark:text-white"
                       }`}
                         >
@@ -325,10 +338,10 @@ export function ModeSelection({
 
                         <Button
                           onClick={() => onQuizLengthChange("all")}
-                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 
-                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30  hover:text-white border border-gray-300 dark:border-gray-700 ${
+                          className={`h-16 flex flex-col items-center dark:hover:text-white/60 justify-center space-y-1 transition-all hover:shadow-lg
+                      backdrop-blur-sm bg-white/30 dark:bg-gray-700/30 hover:bg-[#2d2d2c] hover:text-white border-2 border-gray-200/50 dark:border-gray-700 ${
                         quizLength === "all"
-                          ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
+                          ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white dark:border-gray-300"
                           : "text-black dark:text-white"
                       }`}
                         >
@@ -348,134 +361,150 @@ export function ModeSelection({
             </Card>
 
             {/* Game Mode Selection */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Multiple Choice Mode */}
-              <Card
-                className={`cursor-pointer transition-all border-2 hover:shadow-lg backdrop-blur-md ${
-                  selectedGameMode === "multiple-choice"
-                    ? "border-blue-500 bg-blue-50/70 dark:bg-blue-900/30 dark:border-blue-400"
-                    : "border-gray-200/50 hover:border-blue-300 dark:border-gray-700/50 bg-white/30 dark:bg-gray-800/30"
-                }`}
-                onClick={() => onModeSelect("multiple-choice")}
-              >
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="w-16 h-16 bg-blue-100/70 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto overflow-hidden backdrop-blur-sm">
-                    <img
-                      src="/images/multiple-choice.webp"
-                      alt="Multiple Choice"
-                      className="w-12 h-12 object-contain"
-                    />
-                  </div>
-                  <h3 className="text-xl font-semibold">Multiple Choice</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    Choose from multiple options for each flag. Perfect for
-                    beginners and quick gameplay.
-                  </p>
-
-                  {/* Multiple Choice Options */}
-                  <div className="pt-2 border-t border-gray-200/30 dark:border-gray-700/30">
-                    <Label className="text-sm font-medium mb-2 block">
-                      Number of Options
-                    </Label>
-                    <div className="flex justify-center gap-2">
-                      {optionChoices.map((option) => (
-                        <Button
-                          key={option}
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onMultipleChoiceOptionsChange(option);
-                            onModeSelect("multiple-choice");
-                          }}
-                          className={`w-12 backdrop-blur-sm bg-gray-500/20 dark:bg-gray-700/20 border-white/30 hover:text-white dark:hover:text-black dark:border-gray-600/30 ${
-                            multipleChoiceOptions === option
-                              ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
-                              : "text-black dark:text-white"
-                          } `}
-                        >
-                          {option}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Text Input Mode */}
-              <Card
-                className={`cursor-pointer transition-all border-2 hover:shadow-lg backdrop-blur-md ${
-                  selectedGameMode === "text-input"
-                    ? "border-green-500 bg-green-50/70 dark:bg-green-900/30 dark:border-green-400"
-                    : "border-gray-200/50 hover:border-green-300 dark:border-gray-700/50 bg-white/30 dark:bg-gray-800/30"
-                }`}
-                onClick={() => onModeSelect("text-input")}
-              >
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="w-16 h-16 bg-green-100/70 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto overflow-hidden backdrop-blur-sm">
-                    <img
-                      src="/images/typing-mode.webp"
-                      alt="Typing Mode"
-                      className="w-12 h-12 object-contain"
-                    />
-                  </div>
-                  <h3 className="text-xl font-semibold">Typing</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    Type the country name yourself. More challenging and tests
-                    your knowledge better.
-                  </p>
-
-                  {/* Autocomplete Toggle */}
-                  <div className="pt-2 border-t border-gray-200/30 dark:border-gray-700/30">
-                    <div className="flex items-center justify-between">
-                      <Label
-                        htmlFor="autocomplete-toggle"
-                        className="text-sm cursor-pointer"
-                      >
-                        Enable Autocomplete
-                      </Label>
-                      <Switch
-                        id="autocomplete-toggle"
-                        checked={autocompleteEnabled}
-                        onCheckedChange={(checked) => {
-                          onToggleAutocomplete(checked);
-                          onModeSelect("text-input");
-                        }}
-                        onClick={(e) => e.stopPropagation()}
+            <motion.div
+              initial={{ y: 10, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className=" flex flex-col"
+            >
+              <Label className="text-sm font-semibold self-center mb-2 bg-white/50 shadow-sm shadow-gray-600 dark:shadow-none text-black dark:text-white  px-2 rounded-sm">
+                Quiz Type
+              </Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {/* Multiple Choice Mode */}
+                <Card
+                  className={`cursor-pointer transition-all border-2 hover:shadow-lg backdrop-blur-md ${
+                    selectedGameMode === "multiple-choice"
+                      ? "scale-1 border-blue-500 bg-blue-50/70 dark:bg-blue-900/30 dark:border-blue-400"
+                      : "scale-[0.95] border-gray-200/50 hover:border-blue-300 dark:border-gray-700/50 bg-white/30 dark:bg-gray-800/30"
+                  }`}
+                  onClick={() => onModeSelect("multiple-choice")}
+                >
+                  <CardContent className="p-6 text-center space-y-4">
+                    <div className="w-16 h-16 bg-blue-100/70 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto overflow-hidden backdrop-blur-sm">
+                      <img
+                        src="/images/multiple-choice.webp"
+                        alt="Multiple Choice"
+                        className="w-12 h-12 object-contain"
                       />
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                    <h3 className="text-xl font-semibold">Multiple Choice</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      Choose from multiple options for each flag. Perfect for
+                      beginners and quick gameplay.
+                    </p>
+
+                    {/* Multiple Choice Options */}
+                    <div className="pt-2 border-t border-gray-200/30 dark:border-gray-700/30">
+                      <Label className="text-sm font-medium mb-2 block">
+                        Number of Options
+                      </Label>
+                      <div className="flex justify-center gap-2">
+                        {optionChoices.map((option) => (
+                          <Button
+                            key={option}
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onMultipleChoiceOptionsChange(option);
+                              onModeSelect("multiple-choice");
+                            }}
+                            className={`w-12 backdrop-blur-sm bg-gray-500/20 dark:bg-gray-700/20 border-white/30 hover:text-white  dark:border-gray-600/30 ${
+                              multipleChoiceOptions === option
+                                ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
+                                : "text-black dark:text-white"
+                            } `}
+                          >
+                            {option}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Text Input Mode */}
+                <Card
+                  className={`cursor-pointer transition-all border-2 hover:shadow-lg backdrop-blur-md ${
+                    selectedGameMode === "text-input"
+                      ? "scale-1 border-green-500 bg-green-50/70 dark:bg-green-900/30 dark:border-green-400"
+                      : "scale-[0.95] border-gray-200/50 hover:border-green-300 dark:border-gray-700/50 bg-white/30 dark:bg-gray-800/30"
+                  }`}
+                  onClick={() => onModeSelect("text-input")}
+                >
+                  <CardContent className="p-6 text-center space-y-4">
+                    <div className="w-16 h-16 bg-green-100/70 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto overflow-hidden backdrop-blur-sm">
+                      <img
+                        src="/images/typing-mode.webp"
+                        alt="Typing Mode"
+                        className="w-12 h-12 object-contain"
+                      />
+                    </div>
+                    <h3 className="text-xl font-semibold">Typing</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      Type the country name yourself. More challenging and tests
+                      your knowledge better.
+                    </p>
+
+                    {/* Autocomplete Toggle */}
+                    <div className="pt-2 border-t border-gray-200/30 dark:border-gray-700/30">
+                      <div className="flex items-center justify-between">
+                        <Label
+                          htmlFor="autocomplete-toggle"
+                          className="text-sm cursor-pointer"
+                        >
+                          Enable Autocomplete
+                        </Label>
+                        <Switch
+                          id="autocomplete-toggle"
+                          checked={autocompleteEnabled}
+                          onCheckedChange={(checked) => {
+                            onToggleAutocomplete(checked);
+                            onModeSelect("text-input");
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
 
             {/* Start Game Button */}
-            <Button
-              onClick={onStartGame}
-              disabled={!selectedGameMode}
-              size="lg"
-              className="w-full text-white group py-6 text-lg font-medium mt-4 backdrop-blur-sm bg-orange-700/80 hover:bg-orange-800/80 border border-orange-600/30
-              dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-[#09080e]/30
+            <motion.div
+             initial={{scale : 0, opacity :0}}
+             whileInView={{scale : 1, opacity :1}}
+             transition={{delay: 0.5}}
+             className="flex flex-col space-y-4">
+              <Button
+                onClick={onStartGame}
+                disabled={!selectedGameMode}
+                size="lg"
+                className="w-full text-white group py-6 text-lg font-medium mt-4 backdrop-blur-sm bg-orange-700/80 hover:bg-orange-800/80 border border-orange-600/30
+              dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-white/30 shadow-sm shadow-black 
               "
-            >
-              <Play className="w-5 h-5 mr-2 group-hover:animate-ping" />
-              Start the quiz
-            </Button>
+              >
+                <Play className="w-5 h-5 mr-2 group-hover:animate-ping" />
+                Start the quiz
+              </Button>
 
-            <div className="text-center text-sm text-gray-500 flex flex-col items-center justify-center dark:text-gray-400 space-y-2">
-              {selectedGameMode ? (
-                <p className="dark:text-white/80 text-white/80  bg-orange-800 dark:bg-black px-2 rounded-full opacity-80">
-                  {selectedGameMode === "multiple-choice"
-                    ? `${multipleChoiceOptions} options per question`
-                    : `Text input mode ${
-                        autocompleteEnabled ? "with" : "without"
-                      } autocomplete`}{" "}
-                  · {getQuizLengthDisplay(quizLength, countryFilter)}
-                </p>
-              ) : (
-                <p>Select a game mode to continue</p>
-              )}
-              <Footer />
-            </div>
+              <div className="text-center text-sm text-gray-500 flex flex-col items-center justify-center dark:text-gray-400 space-y-2">
+                {selectedGameMode ? (
+                  <p className="dark:text-white/80 text-white/80  bg-orange-800 dark:bg-black px-2 shadow-lg shadow-gray-600 rounded-full opacity-80">
+                    {selectedGameMode === "multiple-choice"
+                      ? `${multipleChoiceOptions} options per question`
+                      : `Text input mode ${
+                          autocompleteEnabled ? "with" : "without"
+                        } autocomplete`}{" "}
+                    · {getQuizLengthDisplay(quizLength, countryFilter)}
+                  </p>
+                ) : (
+                  <p>Select a game mode to continue</p>
+                )}
+                <Footer />
+              </div>
+            </motion.div>
           </CardContent>
         </Card>
       </div>
