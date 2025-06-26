@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     "Test your knowledge of world flags! Answer the flag, then learn about the country with fun facts, a map location, and images.",
   generator: "v0.dev + Next.js + Tailwind",
   icons: "/favicon.png",
+  verification: { google: "BTD7AsgB6onr1be4O7NE6le06ng_Gw6ACDpt6KzlnRo" },
 };
 
 export default function RootLayout({
@@ -29,7 +30,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head></head>
       <body className={`${notosans.className} ${moirai.variable}`}>
         <Providers>{children}</Providers>
       </body>

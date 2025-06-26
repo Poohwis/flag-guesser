@@ -19,7 +19,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { Background } from "./background";
 import { SettingPopover } from "./SettingPopover";
 import { Footer } from "./footer";
-import { QuizLengthButton } from "./quiz-length-button";
 import { Separator } from "./ui/separator";
 
 interface ModeSelectionProps {
