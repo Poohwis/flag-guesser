@@ -1,9 +1,5 @@
-# *
 User-agent: *
 Allow: /
-
-# Host
-Host: https://flagquizzer.vercel.app
 
 # Sitemaps
 Sitemap: https://flagquizzer.vercel.app/sitemap.xml
