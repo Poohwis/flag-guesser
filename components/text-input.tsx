@@ -5,7 +5,6 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import type { FlagQuestion } from "../types";
 import { motion } from "motion/react";
 import { AnswerResult } from "./answer-result";
@@ -136,7 +135,7 @@ export function TextInput({
   return (
     <div className="flex flex-col ">
       <div className="space-y-4 mb-1">
-        <div className="relative">
+        <div className="relative  flex justify-center items-center">
           <Input
             ref={inputRef}
             type="text"
@@ -144,17 +143,17 @@ export function TextInput({
             value={textAnswer}
             onChange={(e) => onTextInputChange(e.target.value)}
             disabled={showResult || !currentImageLoaded}
-            className="text-lg h-12"
+            className="text-lg h-12  md:max-w-[50%] "
             onKeyDown={handleKeyDown}
           />
 
           {/* Autocomplete Suggestions */}
           {suggestions.length > 0 && !showResult && (
-            <div className="absolute top-full left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg z-10 mt-1">
+            <div className="md:w-[50%] absolute top-full md:left-1/4 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg z-10 mt-1">
               {suggestions.map((suggestion, index) => (
                 <button
                   key={suggestion}
-                  className={`w-full text-left px-4 py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors ${
+                  className={`text-sm w-full text-left px-4 py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors ${
                     index === selectedSuggestionIndex
                       ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
                       : "hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -168,12 +167,13 @@ export function TextInput({
           )}
         </div>
 
-        <div className="h-[40px]">
+        <div className="h-[40px] flex justify-center">
           {!showResult && (
             <Button
               onClick={onTextSubmit}
               disabled={!textAnswer.trim() || !currentImageLoaded}
-              className="w-full dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-[#09080e]/30 dark:text-white"
+              className="md:w-[50%] w-full dark:bg-[#09080e]  
+               dark:hover:bg-[#09080e]/80 dark:border-white/20 dark:border dark:text-white"
             >
               Submit Answer
             </Button>
@@ -239,7 +239,7 @@ export function TextInput({
           </div>
         ) : (
           <div className="h-full flex flex-col justify-center">
-            <div className="text-center text-gray-400 dark:text-gray-500 text-sm">
+            <div className="text-center text-primary/80 text-sm">
               {!currentImageLoaded
                 ? "Loading flag image..."
                 : textAnswer.trim()
