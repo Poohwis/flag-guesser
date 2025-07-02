@@ -10,7 +10,7 @@ export function Footer({isFullForm = false} : {isFullForm? : boolean}) {
         Flags from Flagpedia.net
       </a>
       <br />
-      © 2025 Phuwis — FlagQuizzer  
+      © 2025 Phuwis — Flag Quizzer  
     </footer>
   );
 }
