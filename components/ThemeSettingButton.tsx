@@ -43,16 +43,16 @@ export function ThemeSettingButton({
       .filter(({ bg }) => bg.startsWith(themePrefix));
 
     // Only change if the current background does not match the theme
-    // if (!backgroundList[backgroundIndex]?.startsWith(themePrefix)) {
-    //   const random =
-    //     themeBackgrounds[Math.floor(Math.random() * themeBackgrounds.length)];
-    //   if (random) {
-    //     onBackgroundChange(random.index);
-    //   }
-    // }
-    const random =
-      themeBackgrounds[Math.floor(Math.random() * themeBackgrounds.length)];
-    onBackgroundChange(random.index);
+    if (!backgroundList[backgroundIndex]?.startsWith(themePrefix)) {
+      const random =
+        themeBackgrounds[Math.floor(Math.random() * themeBackgrounds.length)];
+      if (random) {
+        onBackgroundChange(random.index);
+      }
+    }
+    // const random =
+    //   themeBackgrounds[Math.floor(Math.random() * themeBackgrounds.length)];
+    // onBackgroundChange(random.index);
   }, [resolvedTheme]);
 
   return (
