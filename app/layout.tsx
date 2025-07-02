@@ -15,9 +15,9 @@ const moirai = Grand_Hotel({
 });
 
 export const metadata: Metadata = {
-  title: "Flag Quizzer",
+  title: "Flag Quizzer | World Flags Game with Facts & Maps",
   description:
-    "Test your knowledge of world flags! Answer the flag, then learn about the country with fun facts, a map location, and images.",
+    "Test your knowledge of world flags with Flag Quizzer! Discover fun facts, view map locations, and learn about every country along the way.",
   generator: "v0.dev + Next.js + Tailwind",
   icons: "/favicon.png",
   verification: { google: "BTD7AsgB6onr1be4O7NE6le06ng_Gw6ACDpt6KzlnRo" },

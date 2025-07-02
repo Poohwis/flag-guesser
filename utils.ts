@@ -5,6 +5,7 @@ import {
   TOTAL_UN_COUNTRIES,
   TOTAL_ALL_COUNTRIES,
   CountryInfo,
+  UN_COUNTRIES,
 } from "./constants";
 import type { FlagQuestion, CountryFilter, ContinentFilter } from "./types";
 
@@ -91,20 +92,14 @@ export const generateQuestions = (
 
     return {
       id: index + 1,
-      country: name,
+      name: name,
       altNames: countryInfo.altNames,
-      language: countryInfo.languages,
+      languages: countryInfo.languages,
       continent: countryInfo.continent,
       subregion: countryInfo.subregion,
       capital: countryInfo.capital,
-      currency: countryInfo.currency?.name
-        ? [
-            countryInfo.currency.name,
-            countryInfo.currency.code,
-            countryInfo.currency.symbol,
-          ]
-        : [],
-      areaKm: countryInfo.areaKm2,
+      currency: countryInfo.currency,
+      areaKm2: countryInfo.areaKm2,
       tld: countryInfo.tld,
       countryCode: code,
       options: options,
@@ -170,7 +165,7 @@ export const getQuizLengthDisplay = (
 ): string => {
   if (quizLength === "all") {
     return countryFilter === "un"
-      ? `All UN Countries (${TOTAL_UN_COUNTRIES})`
+      ? `All Sovereign States (${TOTAL_UN_COUNTRIES})`
       : `All Countries (${TOTAL_ALL_COUNTRIES})`;
   } else {
     return `${quizLength} Questions`;
@@ -257,4 +252,28 @@ export const fetchWikiMediaCountryDescription = async (
     console.error("Error fetching Wikipedia summary:", error);
     return { description: null, extract: null, sourceUrl: null };
   }
+};
+
+type CountryData = typeof COUNTRY_DATA;
+type CountryEntry = [string, CountryData[keyof CountryData]];
+
+interface FilterOptions {
+  continent?: string | null;
+  sovereignOnly?: boolean;
+}
+
+const sortedCountryByName = Object.entries(COUNTRY_DATA).sort(([, a], [, b]) =>
+  a.name.localeCompare(b.name)
+);
+
+export const filterCountries = ({
+  continent = null,
+  sovereignOnly = false,
+}: FilterOptions): CountryEntry[] => {
+  return sortedCountryByName.filter(([code, country]) => {
+    const matchesContinent = continent ? country.continent === continent : true;
+    const isSovereign = sovereignOnly ? isUNCountry(code) : true;
+
+    return matchesContinent && isSovereign;
+  });
 };

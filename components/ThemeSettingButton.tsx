@@ -1,6 +1,6 @@
 "use client";
 
-import { Dot, Ellipsis, Moon, Sun } from "lucide-react";
+import { Dot, Ellipsis, Moon, Settings, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { Switch } from "./ui/switch";
@@ -20,20 +20,20 @@ import { Button } from "./ui/button";
 import { backgroundList } from "./background";
 import { useEffect, useState } from "react";
 
-interface SettingPopover {
+interface ThemeSettingButtonProps {
   backgroundEnabled: boolean;
   backgroundIndex: number;
   handleNextQuestion?: (isFinishRequest: boolean) => void;
   onToggleBackgroundEnabled: (enabled: boolean) => void;
   onBackgroundChange: (index: number) => void;
 }
-export function SettingPopover({
+export function ThemeSettingButton({
   backgroundEnabled,
   backgroundIndex,
   handleNextQuestion,
   onToggleBackgroundEnabled,
   onBackgroundChange,
-}: SettingPopover) {
+}: ThemeSettingButtonProps) {
   const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -50,13 +50,17 @@ export function SettingPopover({
         onBackgroundChange(random.index);
       }
     }
+    // const random =
+    //   themeBackgrounds[Math.floor(Math.random() * themeBackgrounds.length)];
+    // onBackgroundChange(random.index);
   }, [resolvedTheme]);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={"ghost"} size={"sm"} className="p-2">
-          <Ellipsis />
+          {/* <Ellipsis /> */}
+          <Settings />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -100,7 +104,12 @@ export function SettingPopover({
           </div>
         </div>
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger className=" px-4">
+          <DropdownMenuSubTrigger
+            disabled={!backgroundEnabled}
+            className={`px-4 ${
+              backgroundEnabled ? "" : "text-gray-200 dark:text-gray-700"
+            }`}
+          >
             Select picture
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>

@@ -2,18 +2,21 @@
 import { ExternalLink, Plus, Minus } from "lucide-react";
 import { useState, useRef, useMemo } from "react";
 import { motion } from "motion/react";
+import { useTheme } from "next-themes";
 
 interface MapDisplayProps {
   countryName: string;
-  isDarkMode: boolean;
+  imageRatio? : number
 }
 
 interface ImageCache {
   [key: string]: string; // Key: 'countryName-zoom-isDarkMode', Value: 'mapUrl'
 }
 
-export function MapDisplay({ countryName, isDarkMode }: MapDisplayProps) {
+export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
   const [currentZoom, setCurrentZoom] = useState(5);
+  const {resolvedTheme} =useTheme()
+  const isDarkMode = resolvedTheme === "dark"
 
   const imageCache = useRef<ImageCache>({});
 
@@ -40,7 +43,6 @@ export function MapDisplay({ countryName, isDarkMode }: MapDisplayProps) {
 
     imageCache.current[cacheKey] = newMapUrl; // or finalMapUrl if you added marker
     console.log(`MapDisplay: Cache miss for ${cacheKey}, generating new URL.`);
-    console.log(newMapUrl)
     return newMapUrl; // or finalMapUrl
   }, [
     countryName,
@@ -61,7 +63,7 @@ export function MapDisplay({ countryName, isDarkMode }: MapDisplayProps) {
   return (
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
+      animate={{ scale: 1, opacity: 1 }}
       className="relative w-[260px] h-[312px] shrink-0 "
     >
       <button className="absolute right-1 top-1 p-2 rounded-md text-white bg-black hover:bg-black/80 transition-colors ">
@@ -96,9 +98,9 @@ export function MapDisplay({ countryName, isDarkMode }: MapDisplayProps) {
       <img
         src={mapUrl}
         alt={`Map of ${countryName}`}
-        width={260}
-        height={312}
-        className="rounded-xl shadow-sm shadow-black"
+        width={imageRatio ? 260 * imageRatio : 260 }
+        height={imageRatio ? 312 * imageRatio: 312}
+        className="rounded-md shadow-sm shadow-black"
       />
     </motion.div>
   );

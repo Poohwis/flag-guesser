@@ -1,6 +1,6 @@
 import { FlagQuestion } from "@/types";
 import { CheckCircle, Loader2, XCircle } from "lucide-react";
-import {motion} from "motion/react"
+import { motion } from "motion/react";
 import { CountryInformation } from "./country-information";
 
 interface InformationWithAnswerResultProps {
@@ -8,7 +8,7 @@ interface InformationWithAnswerResultProps {
   currentFlag: FlagQuestion;
   loadingDescription: boolean;
   description: string | null;
-  extract : string | null
+  extract: string | null;
   sourceUrl: string | null;
   isDarkMode: boolean;
   nextImagePreloaded: boolean;
@@ -35,24 +35,24 @@ export const InformationWithAnswerResultSection = ({
     <div className="md:flex flex-col hidden">
       <motion.div
         initial={{ opacity: 0, y: 5 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        className={`mb-2 text-start self-start text-sm font-semibold inline-block px-2 rounded-full bg-black/50 ${
-          isCorrect
-            ? "text-lime-500"
-            : "text-red-700"
+        animate={{ y: 0, opacity: 1 }}
+        className={`my-1 text-start self-center text-sm font-semibold inline-block px-2 rounded-full bg-black/50 ${
+          isCorrect ? "text-lime-500" : "text-red-700"
         }`}
       >
-        {isCorrect ? (
-          <span className="flex items-center justify-center gap-x-1">
-            <CheckCircle size={14} className=" text-lime-500" />
-            {"Correct"}
-          </span>
-        ) : (
-          <span className="flex items-center justify-center gap-x-1">
-            <XCircle size={14} className="text-red-700" />
-            The correct answer is {currentFlag.country}
-          </span>
-        )}
+        <span className="flex items-center justify-center gap-x-1">
+          {isCorrect ? (
+            <>
+              <CheckCircle size={14} className=" text-lime-500" />
+              Correct
+            </>
+          ) : (
+            <>
+              <XCircle size={14} className="text-red-700" />
+              The correct answer is {currentFlag.name}
+            </>
+          )}
+        </span>
       </motion.div>
       <div className="flex flex-col items-center">
         <CountryInformation
@@ -67,8 +67,11 @@ export const InformationWithAnswerResultSection = ({
       <div className="flex flex-col items-end justify-center">
         <button
           onClick={() => onNextQuestion(false)}
-          className="dark:border px-2 rounded-sm text-sm mt-2 w-full md:w-auto bg-black text-white hover:bg-black/80 md:h-8 h-10"
-          disabled={nextDisabled || (!nextImagePreloaded && currentQuestion < totalQuestions - 1)}
+          className="dark:border px-2 rounded-md text-sm mt-2 w-full md:w-auto bg-black text-white hover:bg-black/80 md:h-8 h-10"
+          disabled={
+            nextDisabled ||
+            (!nextImagePreloaded && currentQuestion < totalQuestions - 1)
+          }
         >
           {!nextImagePreloaded && currentQuestion < totalQuestions - 1 ? (
             <>

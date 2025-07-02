@@ -26,7 +26,7 @@ import {
   DEFAULT_QUIZ_LENGTH,
   type QuizLength,
   DEFAULT_COUNTRY_FILTER,
-  altNameUseCountry,
+  ALTNAME_USE_COUNTRY,
   TOTAL_UN_COUNTRIES,
   TOTAL_ALL_COUNTRIES,
 } from "./constants";
@@ -37,7 +37,9 @@ import type {
   ContinentFilter,
 } from "./types";
 import { Background } from "./components/background";
-import { SettingPopover } from "./components/SettingPopover";
+import { ThemeSettingButton } from "./components/ThemeSettingButton";
+import { useBackgroundStore } from "./store/backgroundStore";
+import { useWindowSizeStore } from "./store/windowSizeStore";
 
 export default function FlagGame() {
   // Game state
@@ -95,12 +97,18 @@ export default function FlagGame() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [nextDisable, setNextDisabled] = useState(false);
 
-  const [backgroundEnabled, setBackgroundEnabled] = useState(true);
-  const [backgroundIndex, setBackgroundIndex] = useState(0);
+  const {
+    backgroundEnabled,
+    backgroundIndex,
+    setBackgroundIndex,
+    setBackgroundEnabled,
+  } = useBackgroundStore();
+  const { windowWidth, setWindowWidth } = useWindowSizeStore();
 
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
+      setWindowWidth(window.innerWidth)
     };
     handleResize();
 
@@ -108,16 +116,12 @@ export default function FlagGame() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    console.log(currentFlag);
-  }, [currentFlag]);
-
   const isCorrect =
     gameMode === "multiple-choice"
-      ? selectedAnswer === currentFlag?.country
+      ? selectedAnswer === currentFlag?.name
       : (() => {
           const answer = textAnswer.toLowerCase().trim();
-          const main = currentFlag?.country?.toLowerCase();
+          const main = currentFlag?.name?.toLowerCase();
           const alt = Array.isArray(currentFlag?.altNames)
             ? currentFlag.altNames.map((n) => n.toLowerCase().trim())
             : [];
@@ -194,18 +198,18 @@ export default function FlagGame() {
 
   // Fetch country description
   useEffect(() => {
-    if (currentFlag?.country) {
+    if (currentFlag?.name) {
       setLoadingDescription(true);
       setDescription(null); // Clear previous description
       setSourceUrl(null); // Clear previous source URL
 
       if (showInfomation) {
         const country =
-          altNameUseCountry.includes(currentFlag.countryCode) &&
+          ALTNAME_USE_COUNTRY.includes(currentFlag.countryCode) &&
           Array.isArray(currentFlag.altNames) &&
           currentFlag.altNames.length > 0
             ? currentFlag.altNames[0]
-            : currentFlag.country;
+            : currentFlag.name;
         fetchWikiMediaCountryDescription(country).then((result) => {
           setDescription(result.description);
           setSourceUrl(result.sourceUrl);
@@ -255,18 +259,18 @@ export default function FlagGame() {
     setSelectedAnswer(answer);
     setShowResult(true);
 
-    if (answer === currentFlag.country) {
+    if (answer === currentFlag.name) {
       setScore(score + 1);
       // Add to correct answers
       setCorrectAnswers([
         ...correctAnswers,
-        { countryCode: currentFlag.countryCode, country: currentFlag.country },
+        { countryCode: currentFlag.countryCode, country: currentFlag.name },
       ]);
     } else {
       // Add to incorrect answers
       setIncorrectAnswers([
         ...incorrectAnswers,
-        { countryCode: currentFlag.countryCode, country: currentFlag.country },
+        { countryCode: currentFlag.countryCode, country: currentFlag.name },
       ]);
     }
   };
@@ -293,7 +297,7 @@ export default function FlagGame() {
     setSuggestions([]);
 
     const answer = textAnswer.toLowerCase().trim();
-    const isMainName = answer === currentFlag.country.toLowerCase();
+    const isMainName = answer === currentFlag.name.toLowerCase();
     const isAltName = Array.isArray(currentFlag.altNames)
       ? currentFlag.altNames.some((alt) => alt.toLowerCase().trim() === answer)
       : false;
@@ -303,13 +307,13 @@ export default function FlagGame() {
       // Add to correct answers
       setCorrectAnswers([
         ...correctAnswers,
-        { countryCode: currentFlag.countryCode, country: currentFlag.country },
+        { countryCode: currentFlag.countryCode, country: currentFlag.name },
       ]);
     } else {
       // Add to incorrect answers
       setIncorrectAnswers([
         ...incorrectAnswers,
-        { countryCode: currentFlag.countryCode, country: currentFlag.country },
+        { countryCode: currentFlag.countryCode, country: currentFlag.name },
       ]);
     }
   };
@@ -391,7 +395,6 @@ export default function FlagGame() {
       <ModeSelection
         flagCount={flagCount}
         continentFilter={continentFilter}
-        isDarkMode={resolvedTheme === "dark"}
         autocompleteEnabled={autocompleteEnabled}
         quizLength={quizLength}
         countryFilter={countryFilter}
@@ -417,7 +420,6 @@ export default function FlagGame() {
   if (gameComplete) {
     return (
       <GameComplete
-        isDarkMode={resolvedTheme === "dark"}
         gameMode={gameMode}
         score={score}
         totalQuestions={flagQuestions.length}
@@ -454,7 +456,7 @@ export default function FlagGame() {
               >
                 <Home className="h-4 w-4" />
               </Button>
-              <SettingPopover
+              <ThemeSettingButton
                 backgroundEnabled={backgroundEnabled}
                 onToggleBackgroundEnabled={setBackgroundEnabled}
                 handleNextQuestion={handleNextQuestion}
@@ -503,7 +505,7 @@ export default function FlagGame() {
             <div className="flex justify-center">
               <FlagImage
                 countryCode={currentFlag.countryCode}
-                country={currentFlag.country}
+                country={currentFlag.name}
                 onLoad={handleCurrentImageLoad}
                 isLoading={isTransitioning}
               />
@@ -514,7 +516,6 @@ export default function FlagGame() {
           {gameMode === "multiple-choice" && (
             <MultipleChoice
               isSmallScreen={isSmallScreen}
-              isDarkMode={resolvedTheme === "dark"}
               currentFlag={currentFlag}
               selectedAnswer={selectedAnswer}
               description={description}
@@ -539,7 +540,6 @@ export default function FlagGame() {
           {gameMode === "text-input" && (
             <TextInput
               isSmallScreen={isSmallScreen}
-              isDarkMode={resolvedTheme === "dark"}
               currentFlag={currentFlag}
               textAnswer={textAnswer}
               showResult={showResult}

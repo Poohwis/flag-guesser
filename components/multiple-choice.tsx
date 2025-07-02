@@ -3,12 +3,19 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import {
+  CheckCircle,
+  XCircle,
+  Loader2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import type { FlagQuestion } from "../types";
-import { CountryInformation } from "./country-information";
 import { motion } from "motion/react";
 import { InformationWithAnswerResultSection } from "./Information-with-answer-result";
 import { AnswerResult } from "./answer-result";
+import { ShowInfoButton } from "./show-info-button";
+import { useTheme } from "next-themes";
 
 interface MultipleChoiceProps {
   currentFlag: FlagQuestion;
@@ -19,15 +26,14 @@ interface MultipleChoiceProps {
   nextImagePreloaded: boolean;
   currentQuestion: number;
   totalQuestions: number;
-  isDarkMode: boolean;
   description: string | null;
-  extract : string | null
+  extract: string | null;
   sourceUrl: string | null;
   loadingDescription: boolean;
   showInformation: boolean;
-  isSmallScreen : boolean
-  nextDisabled : boolean;
-  setNextDisabled : (state : boolean)=> void
+  isSmallScreen: boolean;
+  nextDisabled: boolean;
+  setNextDisabled: (state: boolean) => void;
   toggleInformation: () => void;
   onAnswerSelect: (answer: string) => void;
   onNextQuestion: (isFinishRequest: boolean) => void;
@@ -42,7 +48,6 @@ export function MultipleChoice({
   nextImagePreloaded,
   currentQuestion,
   totalQuestions,
-  isDarkMode,
   description,
   sourceUrl,
   extract,
@@ -56,6 +61,8 @@ export function MultipleChoice({
   onNextQuestion,
 }: MultipleChoiceProps) {
   // Keyboard support for multiple choice
+  const {resolvedTheme} =useTheme()
+  const isDarkMode = resolvedTheme === "dark"
   useEffect(() => {
     if (showResult || !currentImageLoaded) return;
 
@@ -103,12 +110,12 @@ export function MultipleChoice({
           let icon = null;
 
           if (showResult && selectedAnswer) {
-            if (option === currentFlag.country) {
+            if (option === currentFlag.name) {
               buttonVariant = "default";
               icon = <CheckCircle className="w-4 h-4 ml-2 text-green-600" />;
             } else if (
               option === selectedAnswer &&
-              option !== currentFlag.country
+              option !== currentFlag.name
             ) {
               buttonVariant = "destructive";
               icon = <XCircle className="w-4 h-4 ml-2 text-red-600" />;
@@ -122,11 +129,11 @@ export function MultipleChoice({
               onClick={() => onAnswerSelect(option)}
               disabled={showResult || !currentImageLoaded}
               className={`md:h-12 h-8 text-left justify-between text-balance ${
-                showResult && option === currentFlag.country
+                showResult && option === currentFlag.name
                   ? "bg-green-100 border-green-500 text-green-800 hover:bg-green-100"
                   : showResult &&
                     option === selectedAnswer &&
-                    option !== currentFlag.country
+                    option !== currentFlag.name
                   ? "bg-red-100 border-red-500 text-red-800 hover:bg-red-100"
                   : ""
               }`}
@@ -147,26 +154,15 @@ export function MultipleChoice({
       </div>
 
       {/* Show infomation toggle */}
-      <div className="md:flex hidden flex-row items-center justify-end gap-x-1 mb-4">
-        <button
-          className="text-sm text-primary/80"
-          onClick={toggleInformation}
-        >
-          show information
-        </button>
-        <input
-          onClick={toggleInformation}
-          type="checkbox"
-          className="accent-primary hover:cursor-pointer"
-          checked={showInformation}
-          readOnly
-        />
-      </div>
+      <ShowInfoButton
+        showInformation={showInformation}
+        toggleInformation={toggleInformation}
+      />
 
       {/* Reserved space for result - ensure consistent height */}
       <motion.div
-        animate={showInformation ? { height: 400 } : { height: 100 }}
-        className="flex-col justify-center"
+        animate={showInformation && !isSmallScreen ? { height: 400 } : { height: 120 }}
+        className="flex-col justify-center "
       >
         {showResult ? (
           <div className="flex flex-col">
@@ -204,7 +200,7 @@ export function MultipleChoice({
             )}
           </div>
         ) : (
-          <div className="flex h-full flex-col justify-center">
+          <div className="flex h-full flex-col justify-center translate-y-3">
             <div className="text-center text-sm text-primary/80">
               {!currentImageLoaded
                 ? "Loading flag image..."
@@ -216,5 +212,3 @@ export function MultipleChoice({
     </div>
   );
 }
-
-

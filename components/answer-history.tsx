@@ -45,7 +45,7 @@ export function AnswerHistory({ correctAnswers, incorrectAnswers }: AnswerHistor
               correctAnswers.map((answer, index) => (
                 <motion.div
                  initial={{scale: 0}}
-                 whileInView={{scale: 1}}
+                 animate={{scale: 1}}
                  key={`correct-${index}`} className="relative group flex items-center justify-center ">
                   <FlagIcon countryCode={answer.countryCode} country={answer.country} size="sm" />
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20">
@@ -78,7 +78,7 @@ export function AnswerHistory({ correctAnswers, incorrectAnswers }: AnswerHistor
               incorrectAnswers.map((answer, index) => (
                 <motion.div
                  initial={{scale: 0}}
-                 whileInView={{scale: 1}}
+                 animate={{scale: 1}}
                  key={`incorrect-${index}`} className="relative group flex items-center justify-center">
                   <FlagIcon countryCode={answer.countryCode} country={answer.country} size="sm" />
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20">

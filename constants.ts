@@ -206,7 +206,7 @@ export const CONTINENTS = [
   "North America",
   "Oceania",
   "South America",
-] as const
+] as const;
 
 export type QuizLength = number | "all";
 export type CountryFilter = "un" | "all";
@@ -2190,6 +2190,7 @@ export const COUNTRY_DATA: { [key: string]: CountryInfo } = {
   ru: {
     name: "Russia",
     altNames: ["Russian Federation"],
+    continent: "Europe",
     capital: "Moscow",
     languages: ["Russian"],
     currency: { name: "Russian Ruble", code: "RUB", symbol: "₽" },
@@ -2936,9 +2937,9 @@ export const isUNCountry = (countryCode: string): boolean => {
   return UN_COUNTRIES.includes(countryCode as any);
 };
 
-export const altNameUseCountry = ["ge", "mf", "ci"];
+export const ALTNAME_USE_COUNTRY = ["ge", "mf", "ci"];
 
-export const sameFlagCountry = {
+export const SAMEFLAG_COUNTRY = {
   sj: "Norwegian archipelago",
   mf: "Overseas collectivity of France",
   um: "Groups of islands under U.S jurisdiction",
@@ -2953,5 +2954,3 @@ export const DEFAULT_COUNTRY_FILTER: CountryFilter = "un";
 // Add constants for the total counts
 export const TOTAL_UN_COUNTRIES = 195;
 export const TOTAL_ALL_COUNTRIES = Object.keys(COUNTRY_DATA).length;
-
-

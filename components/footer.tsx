@@ -1,6 +1,6 @@
-export function Footer() {
+export function Footer({isFullForm = false} : {isFullForm? : boolean}) {
   return (
-    <div className="mt-auto pt-2 text-xs text-center text-primary/70">
+    <footer className="mt-auto pt-3 text-xs text-center text-primary/70">
       <a
         href="https://flagpedia.net"
         target="_blank"
@@ -9,6 +9,8 @@ export function Footer() {
       >
         Flags from Flagpedia.net
       </a>
-    </div>
+      <br />
+      © 2025 Phuwis — FlagQuizzer  
+    </footer>
   );
 }

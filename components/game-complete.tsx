@@ -9,10 +9,10 @@ import type { GameMode } from "../types";
 import { FlagIcon } from "./flag-icon";
 import { Background } from "./background";
 import { Footer } from "./footer";
-import { SettingPopover } from "./SettingPopover";
+import { ThemeSettingButton } from "./ThemeSettingButton";
+import Link from "next/link";
 
 interface GameCompleteProps {
-  isDarkMode: boolean;
   gameMode: GameMode;
   score: number;
   totalQuestions: number;
@@ -23,12 +23,11 @@ interface GameCompleteProps {
   onToggleTheme: () => void;
   correctAnswers: { countryCode: string; country: string }[];
   incorrectAnswers: { countryCode: string; country: string }[];
-  setBackgroundEnabled : (enabled : boolean)=>void
-  setBackgroundIndex : (index : number)=>void
+  setBackgroundEnabled: (enabled: boolean) => void;
+  setBackgroundIndex: (index: number) => void;
 }
 
 export function GameComplete({
-  isDarkMode,
   gameMode,
   score,
   totalQuestions,
@@ -39,7 +38,8 @@ export function GameComplete({
   incorrectAnswers,
   backgroundEnabled,
   backgroundIndex,
-  setBackgroundEnabled,setBackgroundIndex
+  setBackgroundEnabled,
+  setBackgroundIndex,
 }: GameCompleteProps) {
   const getScoreMessage = () => {
     if (score === totalQuestions) {
@@ -59,17 +59,14 @@ export function GameComplete({
       <div className={`w-full min-h-screen flex items-center justify-center }`}>
         <Card className="w-full max-w-2xl backdrop-blur-xl bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl">
           <CardHeader className="text-center relative">
-              <div
-               className="absolute top-4 right-4 p-2" 
-              >
-
-              <SettingPopover
+            <div className="absolute top-4 right-4 p-2">
+              <ThemeSettingButton
                 backgroundEnabled={backgroundEnabled}
                 onToggleBackgroundEnabled={setBackgroundEnabled}
                 onBackgroundChange={setBackgroundIndex}
                 backgroundIndex={backgroundIndex}
               />
-              </div>
+            </div>
             <CardTitle className="bg-gray-800 self-center px-2 py-2 rounded-lg shadow shadow-black font-bold text-green-600 dark:text-green-400 moirai text-5xl">
               Quiz Complete!
             </CardTitle>
@@ -94,9 +91,16 @@ export function GameComplete({
             <div className="text-4xl font-bold text-gray-800 dark:text-gray-200">
               {score}/{totalQuestions}
             </div>
-            <p className="text-gray-600 dark:text-gray-400">
-              {getScoreMessage()}
-            </p>
+            <p className="text-primary/80 font-semibold">{getScoreMessage()}</p>
+            <div className="flex flex-col items-center justify-start space-y-1">
+              <div className="text-sm text-primary/60 italic">
+                A{" "}
+                <Link href={"/all-flags"}>
+                  <span className="underline dark:hover:text-orange-500 hover:text-primary">full list of flags</span>
+                </Link>
+                {" "}is available if you’re interested.
+              </div>
+            </div>
 
             {/* Answer Summary */}
             <div className="grid grid-cols-2 gap-4 mt-4">

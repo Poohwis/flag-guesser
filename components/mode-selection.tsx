@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Moon, Sun, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import {
   TOTAL_ALL_COUNTRIES,
   TOTAL_UN_COUNTRIES,
@@ -17,12 +17,12 @@ import { ContinentFilterOptions } from "./continent-filter-dropdown";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Background } from "./background";
-import { SettingPopover } from "./SettingPopover";
+import { ThemeSettingButton } from "./ThemeSettingButton";
 import { Footer } from "./footer";
-import { Separator } from "./ui/separator";
+import Link from "next/link";
+import { AllFlagLinkButton } from "./all-flag-link-button";
 
 interface ModeSelectionProps {
-  isDarkMode: boolean;
   autocompleteEnabled: boolean;
   quizLength: QuizLength;
   countryFilter: CountryFilter;
@@ -45,7 +45,6 @@ interface ModeSelectionProps {
 }
 
 export function ModeSelection({
-  isDarkMode,
   autocompleteEnabled,
   quizLength,
   countryFilter,
@@ -86,7 +85,7 @@ export function ModeSelection({
         <Card className="w-full max-w-2xl backdrop-blur-xl bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl">
           <CardHeader className="text-center relative">
             <div className="absolute top-4 right-4 p-2">
-              <SettingPopover
+              <ThemeSettingButton
                 backgroundEnabled={backgroundEnabled}
                 backgroundIndex={backgroundIndex}
                 onToggleBackgroundEnabled={setBackgroundEnabled}
@@ -102,7 +101,7 @@ export function ModeSelection({
                 <div className="w-4 h-4 rounded-full bg-blue-500 absolute translate-x-2 translate-y-1 z-30 " />
                 <div className="w-8 h-6 rounded-full bg-green-600 absolute z-20" />
               </div>
-              <h1 className="z-30">FlagQuizzer</h1>
+              <h1 className="z-30">Flag Quizzer</h1>
             </CardTitle>
             <div
               className=" translate-y-1 text-sm text-white/80 px-4 shadow-lg
@@ -112,8 +111,7 @@ export function ModeSelection({
               The Ultimate Flag Challenge!
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Country Filter Selection */}
+          <CardContent className="space-y-2">
             <Card
               className="border-none bg-transparent shadow-none"
               // className="backdrop-blur-md bg-gray-50/50 dark:bg-gray-800/50 border border-white/20 dark:border-gray-600/20"
@@ -121,17 +119,23 @@ export function ModeSelection({
               <CardContent className="p-4">
                 <motion.div
                   initial={{ y: 10, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
+                  animate={{ y: 0, opacity: 1 }}
                   className="space-y-3"
                 >
                   <div className="flex flex-row items-center justify-between">
-                    <Label className="px-2 rounded-sm bg-white/50 shadow-sm shadow-gray-600 dark:shadow-none text-sm font-semibold text-black dark:text-white">
+                    <Label
+                      className="px-2 rounded-sm bg-gradient-to-r from-transparent via-white/10 to-transparent text-sm font-semibold
+                     text-black dark:text-white"
+                    >
                       Flag Selection
                     </Label>
-                    <ContinentFilterOptions
-                      continentFilter={continentFilter}
-                      onContinentFilterChange={onContinentFilterChange}
-                    />
+                    <div>
+                      <span className="text-sm text-primary/80">Filter: </span>
+                      <ContinentFilterOptions
+                        continentFilter={continentFilter}
+                        onContinentFilterChange={onContinentFilterChange}
+                      />
+                    </div>
                   </div>
                   <RadioGroup
                     value={countryFilter}
@@ -215,7 +219,7 @@ export function ModeSelection({
                     <motion.div
                       key={`continent-image-${continentFilter}`}
                       initial={{ opacity: 0, y: -10 }}
-                      whileInView={{
+                      animate={{
                         opacity: 1,
                         y: 0,
                         transition: { delay: 0.1 },
@@ -242,7 +246,7 @@ export function ModeSelection({
                     <motion.div
                       key={"quiz-option"}
                       initial={{ opacity: 0, y: 10 }}
-                      whileInView={{
+                      animate={{
                         opacity: 1,
                         y: 0,
                         transition: { delay: 0.3 },
@@ -250,7 +254,10 @@ export function ModeSelection({
                       exit={{ opacity: 0, y: 10 }}
                       className="space-y-3 "
                     >
-                      <Label className="px-2 rounded-sm bg-white/50 shadow-sm shadow-gray-600 dark:shadow-none text-sm font-semibold text-black dark:text-white">
+                      <Label
+                        className="px-2 rounded-sm bg-gradient-to-r from-transparent via-white/10 to-transparent
+                       text-sm font-semibold text-black dark:text-white"
+                      >
                         Quiz Option
                       </Label>
                       <div className="flex-1 grid grid-cols-2 gap-3">
@@ -362,11 +369,14 @@ export function ModeSelection({
             {/* Game Mode Selection */}
             <motion.div
               initial={{ y: 10, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
               className=" flex flex-col"
             >
-              <Label className="text-sm font-semibold self-center mb-2 bg-white/50 shadow-sm shadow-gray-600 dark:shadow-none text-black dark:text-white  px-2 rounded-sm">
+              <Label
+                className="text-sm font-semibold self-center mb-2 bg-gradient-to-r from-transparent via-white/20 to-transparent
+               text-black dark:text-white  px-2 rounded-sm"
+              >
                 Quiz Type
               </Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -388,7 +398,7 @@ export function ModeSelection({
                       />
                     </div>
                     <h3 className="text-xl font-semibold">Multiple Choice</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-balance text-gray-600 dark:text-gray-400 text-sm">
                       Choose from multiple options for each flag. Perfect for
                       beginners and quick gameplay.
                     </p>
@@ -408,11 +418,12 @@ export function ModeSelection({
                               onMultipleChoiceOptionsChange(option);
                               onModeSelect("multiple-choice");
                             }}
-                            className={`w-12 backdrop-blur-sm bg-gray-500/20 dark:bg-gray-700/20 border-white/30 hover:text-white  dark:border-gray-600/30 ${
-                              multipleChoiceOptions === option
-                                ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
-                                : "text-black dark:text-white"
-                            } `}
+                            className={`w-12 backdrop-blur-sm bg-gray-500/20
+                               dark:bg-gray-700/20 border border-white/80 hover:text-white  dark:border-gray-600/30 ${
+                                 multipleChoiceOptions === option
+                                   ? "bg-[#2d2d2c] dark:bg-[#1b182a] text-white"
+                                   : "text-black dark:text-white"
+                               } `}
                           >
                             {option}
                           </Button>
@@ -440,7 +451,7 @@ export function ModeSelection({
                       />
                     </div>
                     <h3 className="text-xl font-semibold">Typing</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-balance text-gray-600 dark:text-gray-400 text-sm">
                       Type the country name yourself. More challenging and tests
                       your knowledge better.
                     </p>
@@ -472,25 +483,17 @@ export function ModeSelection({
 
             {/* Start Game Button */}
             <motion.div
-             initial={{scale : 0, opacity :0}}
-             whileInView={{scale : 1, opacity :1}}
-             transition={{delay: 0.5}}
-             className="flex flex-col space-y-4">
-              <Button
-                onClick={onStartGame}
-                disabled={!selectedGameMode}
-                size="lg"
-                className="w-full text-white group py-6 text-lg font-medium mt-4 backdrop-blur-sm bg-orange-700/80 hover:bg-orange-800/80 border border-orange-600/30
-              dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-white/30 shadow-sm shadow-black 
-              "
-              >
-                <Play className="w-5 h-5 mr-2 group-hover:animate-ping" />
-                Start the quiz
-              </Button>
-
-              <div className="text-center text-sm text-gray-500 flex flex-col items-center justify-center dark:text-gray-400 space-y-2">
-                {selectedGameMode ? (
-                  <p className="dark:text-white/80 text-white/80  bg-orange-800 dark:bg-black px-2 shadow-lg shadow-gray-600 rounded-full opacity-80">
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-col space-y-2"
+            >
+              <div className="flex flex-col space-y-3">
+                <div className="text-sm text-center flex items-center justify-center mt-4">
+                  <p
+                    className="dark:text-white/90 text-white bg-orange-800 dark:bg-black px-2 text-balance
+                   shadow-lg dark:shadow-gray-600 shadow-orange-950 rounded-md opacity-80"
+                  >
                     {selectedGameMode === "multiple-choice"
                       ? `${multipleChoiceOptions} options per question`
                       : `Text input mode ${
@@ -498,11 +501,21 @@ export function ModeSelection({
                         } autocomplete`}{" "}
                     · {getQuizLengthDisplay(quizLength, countryFilter)}
                   </p>
-                ) : (
-                  <p>Select a game mode to continue</p>
-                )}
-                <Footer />
+                </div>
+                <Button
+                  onClick={onStartGame}
+                  disabled={!selectedGameMode}
+                  size="lg"
+                  className="w-full text-white group py-6 text-lg font-medium mt-4 backdrop-blur-sm bg-orange-700/80 hover:bg-orange-800/80 border border-white/50
+              dark:bg-[#09080e] dark:hover:bg-[#09080e]/80 dark:border-white/30 shadow-sm shadow-black 
+              "
+                >
+                  <Play className="w-5 h-5 mr-2 group-hover:animate-ping" />
+                  Start the quiz
+                </Button>
               </div>
+              <AllFlagLinkButton />
+              <Footer />
             </motion.div>
           </CardContent>
         </Card>

@@ -9,6 +9,9 @@ import type { FlagQuestion } from "../types";
 import { motion } from "motion/react";
 import { AnswerResult } from "./answer-result";
 import { InformationWithAnswerResultSection } from "./Information-with-answer-result";
+import { ChevronUp } from "lucide-react";
+import { ShowInfoButton } from "./show-info-button";
+import { useTheme } from "next-themes";
 
 interface TextInputProps {
   currentFlag: FlagQuestion;
@@ -23,14 +26,13 @@ interface TextInputProps {
   suggestions: string[];
   selectedSuggestionIndex: number;
   showInformation: boolean;
-  isDarkMode: boolean;
   description: string | null;
-  extract : string | null
+  extract: string | null;
   sourceUrl: string | null;
   loadingDescription: boolean;
   isSmallScreen: boolean;
-  nextDisabled : boolean;
-  setNextDisabled : (state : boolean)=> void
+  nextDisabled: boolean;
+  setNextDisabled: (state: boolean) => void;
   toggleInformation: () => void;
   onTextInputChange: (value: string) => void;
   onTextSubmit: () => void;
@@ -53,13 +55,13 @@ export function TextInput({
   suggestions,
   selectedSuggestionIndex,
   showInformation,
-  isDarkMode,
   description,
   extract,
   sourceUrl,
   loadingDescription,
   isSmallScreen,
-  setNextDisabled,nextDisabled,
+  setNextDisabled,
+  nextDisabled,
   toggleInformation,
   onTextInputChange,
   onTextSubmit,
@@ -69,6 +71,8 @@ export function TextInput({
   onClearSuggestions,
 }: TextInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const {resolvedTheme} =useTheme()
+  const isDarkMode = resolvedTheme === "dark"
 
   // Auto-focus input when question loads
   useEffect(() => {
@@ -134,8 +138,8 @@ export function TextInput({
 
   return (
     <div className="flex flex-col ">
-      <div className="space-y-4 mb-1">
-        <div className="relative  flex justify-center items-center">
+      <div className="space-y-2 mb-1 ">
+        <div className="relative flex justify-center items-center">
           <Input
             ref={inputRef}
             type="text"
@@ -168,38 +172,28 @@ export function TextInput({
         </div>
 
         <div className="h-[40px] flex justify-center">
-          {!showResult && (
-            <Button
-              onClick={onTextSubmit}
-              disabled={!textAnswer.trim() || !currentImageLoaded}
-              className="md:w-[50%] w-full dark:bg-[#09080e]  
+          {/* {!showResult && ( */}
+          <Button
+            onClick={onTextSubmit}
+            disabled={!textAnswer.trim() || !currentImageLoaded || showResult}
+            className="md:w-[50%] w-full dark:bg-[#09080e]  
                dark:hover:bg-[#09080e]/80 dark:border-white/20 dark:border dark:text-white"
-            >
-              Submit Answer
-            </Button>
-          )}
+          >
+            Submit Answer
+          </Button>
+          {/* )} */}
         </div>
       </div>
+
       {/* Show infomation toggle */}
-      <div className="md:flex hidden flex-row items-center justify-end gap-x-1 mb-4">
-        <button
-          className="text-sm text-primary/80"
-          onClick={toggleInformation}
-        >
-          show information
-        </button>
-        <input
-          onClick={toggleInformation}
-          type="checkbox"
-          className="accent-primary hover:cursor-pointer"
-          checked={showInformation}
-          readOnly
-        />
-      </div>
+      <ShowInfoButton
+        showInformation={showInformation}
+        toggleInformation={toggleInformation}
+      />
 
       {/* Reserved space for result - ensure consistent height to prevent layout jumps */}
       <motion.div
-        animate={showInformation ? { height: 400 } : { height: 100 }}
+        animate={showInformation && !isSmallScreen ? { height: 400 } : { height: 120 }}
         className="flex-col justify-center"
       >
         {showResult ? (
@@ -238,7 +232,7 @@ export function TextInput({
             )}
           </div>
         ) : (
-          <div className="h-full flex flex-col justify-center">
+          <div className="h-full flex flex-col justify-center translate-y-3">
             <div className="text-center text-primary/80 text-sm">
               {!currentImageLoaded
                 ? "Loading flag image..."
