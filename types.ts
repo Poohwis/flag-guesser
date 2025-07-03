@@ -43,3 +43,10 @@ export type QuizLength = number | "all";
 
 export type ContinentFilter = (typeof CONTINENTS)[number];
 export type FilterType = { continent: string | null; sovereignOnly: boolean };
+
+export type DisplayMode =
+  | "capital"
+  | "languages"
+  | "areaKm2"
+  | "tld"
+  | "currency";

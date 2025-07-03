@@ -2954,3 +2954,20 @@ export const DEFAULT_COUNTRY_FILTER: CountryFilter = "un";
 // Add constants for the total counts
 export const TOTAL_UN_COUNTRIES = 195;
 export const TOTAL_ALL_COUNTRIES = Object.keys(COUNTRY_DATA).length;
+
+
+export const DisplayModes = [
+  "capital",
+  "languages",
+  "areaKm2",
+  "tld",
+  "currency",
+];
+
+export const DisplayModeLables = {
+  capital: "Capital City",
+  languages: "Official Languages",
+  areaKm2: "Area(Km²)",
+  tld: "Top Level Domain",
+  currency: "Currency",
+};

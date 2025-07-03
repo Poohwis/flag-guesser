@@ -4,16 +4,13 @@ import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { getFlagEmoji } from "./country-information";
 import {
-  CountryDescription,
   CountryExtract,
   CountryHeader,
 } from "./coutry-description";
 import { ImageItem } from "./flag-image";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 import { CountryData } from "./country-data";
-import { ChevronDown, ChevronDownCircle, ChevronRight, ChevronUp } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { ScrollArea } from "./ui/scroll-area";
+import { ChevronLeft } from "lucide-react";
 
 interface FlagCardProps {
   code: string;
@@ -29,7 +26,7 @@ export function FlagCard({
   setWikiData,
 }: FlagCardProps) {
   const [localData, setLocalData] = useState(wikiData[country.name] || null);
-  const [showData, setShowData] = useState(false);
+  const [showExtract, setShowExtract] = useState(false);
 
   useEffect(() => {
     if (!wikiData[country.name]) {
@@ -53,7 +50,7 @@ export function FlagCard({
 
   return (
     <HoverCard>
-      <HoverCardTrigger tabIndex={0}>
+      <HoverCardTrigger>
         <motion.div className="flex flex-col h-[120px] items-center gap-y-1 bg-white/10 py-2 rounded-sm hover:bg-white/20 hover:cursor-pointer">
           <div className="h-20 flex justify-center">
             <ImageItem countryCode={code} country={country.name} />
@@ -61,20 +58,20 @@ export function FlagCard({
           <div className="text-sm text-center">{country.name}</div>
         </motion.div>
       </HoverCardTrigger>
-      <HoverCardContent className="md:w-[500px] w-[300px] ">
+      <HoverCardContent className="md:w-[400px] w-[300px] ">
         <div className="relative">
           <button
-            onClick={() => setShowData(!showData)}
+            onClick={() => setShowExtract(!showExtract)}
             className="absolute right-1 top-1"
           >
-            <ChevronRight size={15} className={` ${showData ? "rotate-180" : ""} transition-all`} />
+            <ChevronLeft size={15} className={` ${showExtract ? "" : "rotate-180"} transition-all`} />
           </button>
           <CountryHeader
             countryName={country.name}
             countryEmoji={getFlagEmoji(code)}
             description={localData?.description || ""}
           />
-          {showData ? (
+          {!showExtract ? (
             <CountryData country={country} forHoverPage />
           ) : (
             <motion.div

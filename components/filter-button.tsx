@@ -1,19 +1,31 @@
-import { FilterType } from "@/types";
+import { DisplayMode, FilterType } from "@/types";
 import { motion } from "motion/react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { CONTINENTS } from "@/constants";
-import { Dot } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { CONTINENTS, DisplayModeLables, DisplayModes } from "@/constants";
+import { Dot, Menu } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
 interface FilterButtonContainerProps {
   filter: FilterType;
   setFilter: (filter: FilterType) => void;
+  setDisplayMode: Dispatch<SetStateAction<DisplayMode | null>>;
+  displayMode: DisplayMode | null;
 }
+
 export const FilterButtonContainer = ({
   filter,
   setFilter,
+  setDisplayMode,
+  displayMode,
 }: FilterButtonContainerProps) => {
   return (
-    <div className="flex md:flex-row justify-between md:items-center gap-x-4 gap-y-1 mb-2">
+    <div className="flex md:flex-row flex-col justify-start md:items-center gap-x-4 gap-y-1 mb-2">
       <div
         className="text-sm flex flex-row space-x-1 bg-black/20 dark:bg-white/20 
            self-start py-0.5 px-1 rounded-full relative"
@@ -42,13 +54,43 @@ export const FilterButtonContainer = ({
           All flags
         </button>
       </div>
-      <div className="flex flex-row items-center gap-x-2">
-        <span className="text-sm text-primary/80 md:inline-block hidden">
-          By continent:{" "}
+      <div className="md:ml-0 ml-1 flex flex-row items-center gap-x-2">
+        <span className="text-sm text-primary/80">View by: </span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="text-sm bg-black px-2 rounded-full text-white outline-none border-2 border-white/20">
+              {displayMode ? DisplayModeLables[displayMode] : "Flag"}
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-[180px]">
+            <DropdownMenuLabel>View by</DropdownMenuLabel>
+            <DropdownMenuItem
+              className="hover:cursor-pointer text-sm flex flex-row justify-between items-center"
+              onClick={() => setDisplayMode(null)}
+            >
+              Flag
+              {!displayMode && <Dot />}
+            </DropdownMenuItem>
+            {DisplayModes.map((d) => (
+              <DropdownMenuItem
+                key={d}
+                className="hover:cursor-pointer text-sm flex flex-row justify-between items-center"
+                onClick={() => setDisplayMode(d as DisplayMode)}
+              >
+                {DisplayModeLables[d as keyof typeof DisplayModeLables]}
+                {displayMode === d && <Dot />}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <div className="md:ml-0 ml-1 flex flex-row items-center gap-x-2">
+        <span className="text-sm text-primary/80 md:inline-block">
+          Continent filter:{" "}
         </span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="bg-black px-2 rounded-full border-2 border-white/20 text-white">
+            <button className="text-sm bg-black px-2 rounded-full border-2 border-white/20 text-white outline-none">
               {filter.continent || "All"}
             </button>
           </DropdownMenuTrigger>

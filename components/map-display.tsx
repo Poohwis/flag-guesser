@@ -1,22 +1,23 @@
 "use client";
 import { ExternalLink, Plus, Minus } from "lucide-react";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, SetStateAction, useEffect } from "react";
 import { motion } from "motion/react";
 import { useTheme } from "next-themes";
 
 interface MapDisplayProps {
   countryName: string;
-  imageRatio? : number
+  imageRatio?: number;
 }
 
 interface ImageCache {
   [key: string]: string; // Key: 'countryName-zoom-isDarkMode', Value: 'mapUrl'
 }
 
+const DEFAULT_ZOOM = 4;
 export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
-  const [currentZoom, setCurrentZoom] = useState(5);
-  const {resolvedTheme} =useTheme()
-  const isDarkMode = resolvedTheme === "dark"
+  const [currentZoom, setCurrentZoom] = useState(DEFAULT_ZOOM);
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
 
   const imageCache = useRef<ImageCache>({});
 
@@ -30,6 +31,7 @@ export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
   )}-${currentZoom}-${isDarkMode}`;
 
   const mapUrl = useMemo(() => {
+    if (currentZoom === DEFAULT_ZOOM) return null;
     if (imageCache.current[cacheKey]) {
       console.log(`MapDisplay: Cache hit for ${cacheKey}`);
       return imageCache.current[cacheKey];
@@ -55,11 +57,41 @@ export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
     cacheKey,
   ]);
 
+  const formattedCountryName = countryName
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "_");
+  const themePrefix = isDarkMode ? "dark" : "light";
+  const localUrl = `/images/maps/${themePrefix}_${formattedCountryName}.png`;
+
+  const urlToUse = currentZoom === DEFAULT_ZOOM ? localUrl : mapUrl || localUrl;
+
   // Basic check for API key
   if (!apiKey) {
     return;
   }
 
+  return (
+    <MapStatic
+      countryName={countryName}
+      setCurrentZoom={setCurrentZoom}
+      url={urlToUse}
+    />
+  );
+}
+
+interface MapStaticProps {
+  countryName: string;
+  setCurrentZoom: React.Dispatch<React.SetStateAction<number>>;
+  imageRatio?: number;
+  url: string
+}
+
+const MapStatic = ({
+  countryName,
+  setCurrentZoom,
+  url,
+  imageRatio,
+}: MapStaticProps) => {
   return (
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
@@ -80,7 +112,7 @@ export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
       <div className="absolute right-1 bottom-4 gap-y-[0.7px] flex flex-col items-center justify-center">
         <button
           onClick={() =>
-            setCurrentZoom((prevZoom) => Math.min(prevZoom + 1, 7))
+            setCurrentZoom((prevZoom) => Math.min(prevZoom + 1, 6))
           }
           className="text-white  p-1 bg-black hover:bg-black/80 rounded-t-md transition-color"
         >
@@ -88,7 +120,7 @@ export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
         </button>
         <button
           onClick={() =>
-            setCurrentZoom((prevZoom) => Math.max(prevZoom - 1, 3))
+            setCurrentZoom((prevZoom) => Math.max(prevZoom - 1, 2))
           }
           className="text-white p-1 bg-black hover:bg-black/80 rounded-b-md transition-color"
         >
@@ -96,12 +128,12 @@ export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
         </button>
       </div>
       <img
-        src={mapUrl}
+        src={url}
         alt={`Map of ${countryName}`}
-        width={imageRatio ? 260 * imageRatio : 260 }
-        height={imageRatio ? 312 * imageRatio: 312}
+        width={imageRatio ? 260 * imageRatio : 260}
+        height={imageRatio ? 312 * imageRatio : 312}
         className="rounded-md shadow-sm shadow-black"
       />
     </motion.div>
   );
-}
+};
