@@ -75,6 +75,7 @@ export function MapDisplay({ countryName, imageRatio }: MapDisplayProps) {
       countryName={countryName}
       setCurrentZoom={setCurrentZoom}
       url={urlToUse}
+      currentZoom={currentZoom}
     />
   );
 }
@@ -84,6 +85,7 @@ interface MapStaticProps {
   setCurrentZoom: React.Dispatch<React.SetStateAction<number>>;
   imageRatio?: number;
   url: string
+  currentZoom : number
 }
 
 const MapStatic = ({
@@ -91,6 +93,7 @@ const MapStatic = ({
   setCurrentZoom,
   url,
   imageRatio,
+  currentZoom
 }: MapStaticProps) => {
   return (
     <motion.div
@@ -111,18 +114,20 @@ const MapStatic = ({
       </button>
       <div className="absolute right-1 bottom-4 gap-y-[0.7px] flex flex-col items-center justify-center">
         <button
+          disabled={currentZoom === 6}
           onClick={() =>
             setCurrentZoom((prevZoom) => Math.min(prevZoom + 1, 6))
           }
-          className="text-white  p-1 bg-black hover:bg-black/80 rounded-t-md transition-color"
+          className={ `text-white p-1  rounded-t-md transition-color ${currentZoom === 6 ? "bg-gray-300" : "bg-black hover:bg-gray-800"}` }
         >
           <Plus size={14} />
         </button>
         <button
+          disabled={currentZoom === 2}
           onClick={() =>
             setCurrentZoom((prevZoom) => Math.max(prevZoom - 1, 2))
           }
-          className="text-white p-1 bg-black hover:bg-black/80 rounded-b-md transition-color"
+          className={ `text-white p-1  rounded-b-md transition-color ${currentZoom === 2 ? "bg-gray-300" : "bg-black hover:bg-gray-800"}` }
         >
           <Minus size={14} />
         </button>
