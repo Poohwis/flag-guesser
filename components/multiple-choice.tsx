@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle } from "lucide-react";
@@ -76,25 +76,29 @@ export function MultipleChoice({
 
   // Spacebar support for next question and view results
 
+  const [allowSpace, setAllowSpace ]=useState(true)
+  useEffect(()=>{console.log(nextDisabled.toString())}, [nextDisabled])
   useEffect(() => {
     if (!showResult) return;
 
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === "Space" && !nextDisabled) {
+      if (event.code === "Space" && !nextDisabled && allowSpace) {
         event.preventDefault();
         setNextDisabled(true);
+        setAllowSpace(false)
         onNextQuestion(false);
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [showResult, onNextQuestion, nextDisabled]);
+  }, [showResult, onNextQuestion, nextDisabled, allowSpace]);
 
   // Re-enable next button when question changes or result is hidden
   useEffect(() => {
+    setTimeout(()=>{setAllowSpace(true)},100)
     setNextDisabled(false);
-  }, [currentQuestion, showResult]);
+  }, [currentQuestion, showResult,allowSpace]);
 
   return (
     <div className="flex-1 flex flex-col">

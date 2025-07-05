@@ -3,6 +3,7 @@ import { ExternalLink, Plus, Minus } from "lucide-react";
 import { useState, useRef, useMemo, SetStateAction, useEffect } from "react";
 import { motion } from "motion/react";
 import { useTheme } from "next-themes";
+import { getFormattedName } from "@/constants";
 
 interface MapDisplayProps {
   countryName: string;

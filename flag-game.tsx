@@ -366,16 +366,16 @@ export default function FlagGame() {
       if (nextImagePreloaded) {
         setIsTransitioning(true);
 
-        setTimeout(() => {
-          setCurrentQuestion(currentQuestion + 1);
-          setSelectedAnswer(null);
-          setTextAnswer("");
-          setShowResult(false);
-          setSuggestions([]);
-          setSelectedSuggestionIndex(-1);
-          setCurrentImageLoaded(false);
-          setIsTransitioning(false);
-        }, 150);
+        // setTimeout(() => {
+        setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
+        setTextAnswer("");
+        setShowResult(false);
+        setSuggestions([]);
+        setSelectedSuggestionIndex(-1);
+        setCurrentImageLoaded(false);
+        setIsTransitioning(false);
+        // }, 20);
       }
     } else {
       // Save final time before completing the game

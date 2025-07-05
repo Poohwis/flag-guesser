@@ -2955,7 +2955,6 @@ export const DEFAULT_COUNTRY_FILTER: CountryFilter = "un";
 export const TOTAL_UN_COUNTRIES = 195;
 export const TOTAL_ALL_COUNTRIES = Object.keys(COUNTRY_DATA).length;
 
-
 export const DisplayModes = [
   "capital",
   "languages",
@@ -2970,4 +2969,11 @@ export const DisplayModeLables = {
   areaKm2: "Area(Km²)",
   tld: "Top Level Domain",
   currency: "Currency",
+};
+
+export const getFormattedName = () => {
+  const allCountryName = Object.values(COUNTRY_DATA).map((value, index) =>
+    value.name.toLowerCase().replace(/[^a-z0-9]/g, "_")
+  );
+  console.log(allCountryName);
 };
