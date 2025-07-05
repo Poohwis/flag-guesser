@@ -77,7 +77,6 @@ export function MultipleChoice({
   // Spacebar support for next question and view results
 
   const [allowSpace, setAllowSpace ]=useState(true)
-  useEffect(()=>{console.log(nextDisabled.toString())}, [nextDisabled])
   useEffect(() => {
     if (!showResult) return;
 
