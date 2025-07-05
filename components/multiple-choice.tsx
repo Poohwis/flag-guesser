@@ -3,13 +3,7 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  CheckCircle,
-  XCircle,
-  Loader2,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 import type { FlagQuestion } from "../types";
 import { motion } from "motion/react";
 import { InformationWithAnswerResultSection } from "./Information-with-answer-result";
@@ -61,8 +55,8 @@ export function MultipleChoice({
   onNextQuestion,
 }: MultipleChoiceProps) {
   // Keyboard support for multiple choice
-  const {resolvedTheme} =useTheme()
-  const isDarkMode = resolvedTheme === "dark"
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
   useEffect(() => {
     if (showResult || !currentImageLoaded) return;
 
@@ -161,7 +155,9 @@ export function MultipleChoice({
 
       {/* Reserved space for result - ensure consistent height */}
       <motion.div
-        animate={showInformation && !isSmallScreen ? { height: 400 } : { height: 120 }}
+        animate={
+          showInformation && !isSmallScreen ? { height: 400 } : { height: 120 }
+        }
         className="flex-col justify-center "
       >
         {showResult ? (

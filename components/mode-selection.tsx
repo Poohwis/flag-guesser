@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Play } from "lucide-react";
+import { Play, Volume2, VolumeOff } from "lucide-react";
 import {
   TOTAL_ALL_COUNTRIES,
   TOTAL_UN_COUNTRIES,
@@ -19,8 +19,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { Background } from "./background";
 import { ThemeSettingButton } from "./ThemeSettingButton";
 import { Footer } from "./footer";
-import Link from "next/link";
 import { AllFlagLinkButton } from "./all-flag-link-button";
+import { useSoundStore } from "@/store/soundStore";
 
 interface ModeSelectionProps {
   autocompleteEnabled: boolean;
@@ -84,7 +84,7 @@ export function ModeSelection({
       <div className={`min-h-screen flex items-center justify-center }`}>
         <Card className="w-full max-w-2xl backdrop-blur-xl bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl">
           <CardHeader className="text-center relative">
-            <div className="absolute top-4 right-4 p-2">
+            <div className="flex flex-row items-center absolute top-4 right-4 p-2">
               <ThemeSettingButton
                 backgroundEnabled={backgroundEnabled}
                 backgroundIndex={backgroundIndex}

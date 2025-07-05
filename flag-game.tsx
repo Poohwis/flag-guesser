@@ -1,11 +1,14 @@
 "use client";
 
+import { playSound } from "react-sounds";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Home, Clock } from "lucide-react";
+import { Home, Clock, Volume2, VolumeOff } from "lucide-react";
 import { useTheme } from "next-themes";
+// import successSound from "./sounds/success.mp3"
+// import errorSound from "./sounds/error.mp3"
 
 import { ModeSelection } from "./components/mode-selection";
 import { GameComplete } from "./components/game-complete";
@@ -40,6 +43,7 @@ import { Background } from "./components/background";
 import { ThemeSettingButton } from "./components/ThemeSettingButton";
 import { useBackgroundStore } from "./store/backgroundStore";
 import { useWindowSizeStore } from "./store/windowSizeStore";
+import { useSoundStore } from "./store/soundStore";
 
 export default function FlagGame() {
   // Game state
@@ -72,6 +76,39 @@ export default function FlagGame() {
   const [incorrectAnswers, setIncorrectAnswers] = useState<
     { countryCode: string; country: string }[]
   >([]);
+
+  const handlePlaySuccessSound = () =>
+    playSound("/sounds/success.mp3", { volume: 0.4, rate: 1.3 });
+  const handlePlayErrorSound = () =>
+    playSound("/sounds/error.mp3", { volume: 0.4, rate: 1.3 });
+
+  const { soundEnabled, setSoundEnabled } = useSoundStore();
+  const [answerLength, setAnswerLength] = useState<{
+    correct: number;
+    incorrect: number;
+  }>({ correct: 0, incorrect: 0 });
+
+  useEffect(() => {
+    if (!soundEnabled) return;
+    if (
+      correctAnswers.length !== 0 &&
+      answerLength.correct !== correctAnswers.length
+    ) {
+      // playCorrect();
+      handlePlaySuccessSound();
+      setAnswerLength((prev) => ({ ...prev, correct: correctAnswers.length }));
+    }
+    if (
+      incorrectAnswers.length !== 0 &&
+      answerLength.incorrect !== incorrectAnswers.length
+    ) {
+      handlePlayErrorSound();
+      setAnswerLength((prev) => ({
+        ...prev,
+        incorrect: incorrectAnswers.length,
+      }));
+    }
+  }, [correctAnswers, incorrectAnswers]);
 
   // Image loading states
   const [currentImageLoaded, setCurrentImageLoaded] = useState(false);
@@ -108,7 +145,7 @@ export default function FlagGame() {
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
-      setWindowWidth(window.innerWidth)
+      setWindowWidth(window.innerWidth);
     };
     handleResize();
 
@@ -455,6 +492,14 @@ export default function FlagGame() {
                 title="Back to Main Menu"
               >
                 <Home className="h-4 w-4" />
+              </Button>
+              <Button
+                onClick={() => setSoundEnabled(!soundEnabled)}
+                variant={"ghost"}
+                size={"sm"}
+                className="p-2"
+              >
+                {soundEnabled ? <Volume2 /> : <VolumeOff />}
               </Button>
               <ThemeSettingButton
                 backgroundEnabled={backgroundEnabled}
